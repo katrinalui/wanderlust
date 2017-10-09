@@ -20,6 +20,33 @@ This app, at a minimum, will satisfy the following MVPs:
 
 ## Design Documents
 ### Wireframes
+Login Page
+
+![](docs/Login Page.png)
+
+Dashboard
+
+![](docs/Dashboard.png)
+
+Create/Edit Trip Form
+
+![](docs/crud_trips.png)
+
+Map + Chat
+
+![](docs/Map +Chat.png)
+
+Search
+
+![](docs/Search.png)
+
+Hamburger Menu
+
+![](docs/Hamburger Menu.png)
+
+Day Picker
+
+![](docs/Day Picker.png)
 
 ## Technologies & Technical Challenges
 This mobile app will be created using Google Firebase, React Native, and Redux which will allow for rapid prototyping.
