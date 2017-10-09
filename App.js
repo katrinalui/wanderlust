@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Login from './src/components/login';
+import Login from './src/components/fb_login/login';
 import {
   Platform,
   StyleSheet,

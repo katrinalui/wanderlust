@@ -10,11 +10,27 @@ import {
 } from 'react-native-fbsdk';
 
 class Login extends React.Component {
+  fbAuth() {
+    LoginManager.logInWithReadPermissions(['public_profile']).then(
+      function(result) {
+        if (result.isCancelled) {
+          alert('Login cancelled');
+        } else {
+          alert('Login success with permissions: '
+            +result.grantedPermissions.toString());
+        }
+      },
+      function(error) {
+        alert('Login fail with error: ' + error);
+      }
+    );
+  }
+
   render() {
     return (
       <View>
         <LoginButton
-          publishPermissions={["publish_actions"]}
+          readPermissions={["public_profile"]}
           onLoginFinished={
             (error, result) => {
               if (error) {
@@ -35,21 +51,5 @@ class Login extends React.Component {
     );
   }
 }
-
-
-// Attempt a login using the Facebook login dialog asking for default permissions.
-LoginManager.logInWithReadPermissions(['public_profile']).then(
-  function(result) {
-    if (result.isCancelled) {
-      alert('Login cancelled');
-    } else {
-      alert('Login success with permissions: '
-        +result.grantedPermissions.toString());
-    }
-  },
-  function(error) {
-    alert('Login fail with error: ' + error);
-  }
-);
 
 export default Login;
