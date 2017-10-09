@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Login from './src/components/login';
 import {
   Platform,
   StyleSheet,
@@ -13,6 +14,7 @@ export default class App extends Component {
         <Text style={styles.welcome}>
           Welcome to Wanderlust!
         </Text>
+        <Login />
       </View>
     );
   }
