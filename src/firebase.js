@@ -8,6 +8,7 @@ const firebaseConfig = {
   storageBucket: "wanderlust-travel.appspot.com",
   messagingSenderId: "940837448148"
 };
-firebase.initializeApp(firebaseConfig);
 
-export default firebase;
+const firebaseRef = () => firebase.initializeApp(firebaseConfig);
+
+export default firebaseRef;

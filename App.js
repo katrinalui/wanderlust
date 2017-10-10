@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Login from './src/components/fb_login/login';
+import FacebookLogin from './src/components/fb_login/login';
 import {
   Platform,
   StyleSheet,
@@ -14,7 +14,7 @@ export default class App extends Component {
         <Text style={styles.welcome}>
           Welcome to Wanderlust~
         </Text>
-        <Login />
+        <FacebookLogin />
       </View>
     );
   }
@@ -31,10 +31,5 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+  }
 });

@@ -10,31 +10,43 @@ import {
   LoginManager
 } from 'react-native-fbsdk';
 
-class Login extends React.Component {
+import * as firebase from 'firebase';
+import firebaseRef from '../../firebase';
+
+firebaseRef();
+
+class FacebookLogin extends React.Component {
   render() {
     return (
       <View>
         <LoginButton
-          readPermissions={["public_profile"]}
+          readPermissions={["public_profile", "email"]}
           onLoginFinished={
             (error, result) => {
               if (error) {
-                alert("login has error: " + result.error);
+                alert("Login has error: " + result.error);
               } else if (result.isCancelled) {
-                alert("login is cancelled.");
+                alert("Login cancelled.");
               } else {
                 AccessToken.getCurrentAccessToken().then(
                   (data) => {
-                    alert(data.accessToken.toString());
-                  }
+                    const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
+                    firebase.auth().signInWithCredential(credential).then((result) => {
+                      // Success
+                    }, error => {
+                      console.log(error);
+                    });
+                  }, (error => {
+                    console.log(error);
+                  })
                 );
               }
             }
           }
-          onLogoutFinished={() => alert("logout.")}/>
+          onLogoutFinished={() => alert("You have been logged out.")}/>
       </View>
     );
   }
 }
 
-export default Login;
+export default FacebookLogin;
