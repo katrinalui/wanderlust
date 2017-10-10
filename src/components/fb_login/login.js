@@ -1,6 +1,7 @@
 import React from 'react';
 import {
-  View
+  View,
+  Button, Text
 } from 'react-native';
 
 import {
@@ -10,22 +11,6 @@ import {
 } from 'react-native-fbsdk';
 
 class Login extends React.Component {
-  fbAuth() {
-    LoginManager.logInWithReadPermissions(['public_profile']).then(
-      function(result) {
-        if (result.isCancelled) {
-          alert('Login cancelled');
-        } else {
-          alert('Login success with permissions: '
-            +result.grantedPermissions.toString());
-        }
-      },
-      function(error) {
-        alert('Login fail with error: ' + error);
-      }
-    );
-  }
-
   render() {
     return (
       <View>

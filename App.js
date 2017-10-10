@@ -12,7 +12,7 @@ export default class App extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Welcome to Wanderlust!
+          Welcome to Wanderlust~
         </Text>
         <Login />
       </View>
