@@ -11,27 +11,16 @@ import {
 } from 'react-native-fbsdk';
 
 import * as firebase from 'firebase';
-import firebaseRef from '../../firebase';
+// import firebaseRef from '../../firebase';
 
-firebaseRef();
+// firebaseRef();
 
 class FacebookLogin extends React.Component {
   constructor(props) {
     super(props);
-    // this.test();
     AccessToken.getCurrentAccessToken().then(
       token => console.log('token', token)
     );
-  }
-
-  test() {
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        console.log('user is', user);
-      } else {
-        console.log('no user');
-      }
-    });
   }
 
   render() {

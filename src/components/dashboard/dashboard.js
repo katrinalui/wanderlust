@@ -14,7 +14,7 @@ class Dashboard extends React.Component {
     return (
       <View>
         <Text>
-          Welcome back { this.props.currentUser.name }!!
+           Your current trips!
         </Text>
 
 
