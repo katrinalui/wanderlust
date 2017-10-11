@@ -6,28 +6,18 @@ import {
 
 import {
   LoginButton,
-  AccessToken,
-  LoginManager
+  AccessToken
 } from 'react-native-fbsdk';
 
 import * as firebase from 'firebase';
-// import firebaseRef from '../../firebase';
-
-// firebaseRef();
 
 class FacebookLogin extends React.Component {
-  constructor(props) {
-    super(props);
-    AccessToken.getCurrentAccessToken().then(
-      token => console.log('token', token)
-    );
-  }
-
   render() {
     return (
       <View>
         <LoginButton
           readPermissions={["public_profile", "email"]}
+          autoLogoutLink={false}
           onLoginFinished={
             (error, result) => {
               if (error) {
@@ -43,7 +33,6 @@ class FacebookLogin extends React.Component {
 
                     firebase.auth().signInWithCredential(credential)
                             .then((result) => {
-                              console.log(data);
                               const userRef = firebase.database().ref(`/users/${data.userID}`);
 
                               const name = result.displayName;

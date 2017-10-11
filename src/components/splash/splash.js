@@ -9,35 +9,29 @@ import {
 
 import * as firebase from 'firebase';
 
-const QUOTES = ["The world is a book and those who do not travel read only one page.",
-                "A good traveler has no fixed plans and is not intent on arriving.",
-                "The traveler sees what he sees. The tourist sees what he has come to see."];
 
-class SplashPage extends React.Component {
+class Splash extends React.Component {
   componentDidMount() {
     AccessToken.getCurrentAccessToken().then(token => {
       if (token) {
         firebase.database().ref(`/users/${token.userID}`)
-                .on('value', (snap) => console.log(snap.val()));
+                .on('value', (snap) => this.props.receiveCurrentUser(snap.val()));
+        this.props.navigation.navigate('Dashboard');
       } else {
-        setTimeout(() => {
+        // setTimeout(() => {
           this.props.navigation.navigate('Login');
-        }, 2000);
+        // }, 2000);
       }
     });
   }
 
   render() {
-    const randomQuote = QUOTES[Math.floor(Math.random() * 3)];
     return (
       <View>
-        <Text style={{textAlign:'center'}}>
-          { randomQuote }
-        </Text>
       </View>
     );
   }
 
 }
 
-export default SplashPage;
+export default Splash;
