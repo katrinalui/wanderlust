@@ -6,6 +6,7 @@ import configStore from './src/store/config_store';
 export default class App extends Component {
   render() {
     const store = configStore();
+    window.store = store;
     return (
       <Provider store={ store }>
         <Routers />

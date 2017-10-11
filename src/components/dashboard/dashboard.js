@@ -10,11 +10,14 @@ class Dashboard extends React.Component {
   }
 
   render() {
+    console.log(this.props);
     return (
       <View>
         <Text>
-          I am a dashboard!!
+          Welcome back { this.props.currentUser.name }!!
         </Text>
+
+
       </View>
     );
   }

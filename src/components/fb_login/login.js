@@ -16,6 +16,24 @@ import firebaseRef from '../../firebase';
 firebaseRef();
 
 class FacebookLogin extends React.Component {
+  constructor(props) {
+    super(props);
+    // this.test();
+    AccessToken.getCurrentAccessToken().then(
+      token => console.log('token', token)
+    );
+  }
+
+  test() {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        console.log('user is', user);
+      } else {
+        console.log('no user');
+      }
+    });
+  }
+
   render() {
     return (
       <View>
@@ -30,24 +48,31 @@ class FacebookLogin extends React.Component {
               } else {
                 AccessToken.getCurrentAccessToken().then(
                   (data) => {
-                    const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
-                    firebase.auth().signInWithCredential(credential).then((result) => {
-                      const userRef = firebase.database().ref(`/users/${result.uid}`);
 
-                      const name = result.displayName;
-                      const email = result.email;
-                      const profilePic = result.photoURL;
+                    const credential = firebase.auth.FacebookAuthProvider
+                                               .credential(data.accessToken);
 
-                      userRef.set({
-                        name,
-                        email,
-                        profilePic
-                      });
-                      console.log(this.props);
-                      this.props.receiveCurrentUser({
-                        name,
-                        profilePic
-                      });
+                    firebase.auth().signInWithCredential(credential)
+                            .then((result) => {
+                              console.log(data);
+                              const userRef = firebase.database().ref(`/users/${data.userID}`);
+
+                              const name = result.displayName;
+                              const email = result.email;
+                              const profilePic = result.photoURL;
+
+                              userRef.set({
+                                name,
+                                email,
+                                profilePic
+                              });
+
+                              this.props.receiveCurrentUser({
+                                name,
+                                profilePic
+                              });
+
+                              this.props.navigation.navigate('Dashboard');
                     }, error => {
                       console.log(error);
                     });
