@@ -7,7 +7,9 @@ import {
 import {
   LoginButton,
   AccessToken,
-  LoginManager
+  LoginManager,
+  GraphRequest,
+  GraphRequestManager
 } from 'react-native-fbsdk';
 
 import * as firebase from 'firebase';
@@ -32,7 +34,13 @@ class FacebookLogin extends React.Component {
                   (data) => {
                     const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
                     firebase.auth().signInWithCredential(credential).then((result) => {
-                      // Success
+                      console.log(result);
+                      const userRef = firebase.database().ref(`/users/${result.uid}`);
+                      userRef.set({
+                        name: result.displayName,
+                        email: result.email,
+                        profilePic: result.photoURL
+                      });
                     }, error => {
                       console.log(error);
                     });
@@ -43,7 +51,7 @@ class FacebookLogin extends React.Component {
               }
             }
           }
-          onLogoutFinished={() => alert("You have been logged out.")}/>
+          />
       </View>
     );
   }
