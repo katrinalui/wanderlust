@@ -7,9 +7,7 @@ import {
 import {
   LoginButton,
   AccessToken,
-  LoginManager,
-  GraphRequest,
-  GraphRequestManager
+  LoginManager
 } from 'react-native-fbsdk';
 
 import * as firebase from 'firebase';
@@ -34,7 +32,6 @@ class FacebookLogin extends React.Component {
                   (data) => {
                     const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
                     firebase.auth().signInWithCredential(credential).then((result) => {
-                      console.log(result);
                       const userRef = firebase.database().ref(`/users/${result.uid}`);
                       userRef.set({
                         name: result.displayName,

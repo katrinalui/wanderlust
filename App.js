@@ -1,35 +1,15 @@
 import React, { Component } from 'react';
-import FacebookLogin from './src/components/fb_login/login';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import Routers from './src/router';
+import { Provider } from 'react-redux';
+import configStore from './src/store/config_store';
 
 export default class App extends Component {
   render() {
+    const store = configStore();
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to Wanderlust~
-        </Text>
-        <FacebookLogin />
-      </View>
+      <Provider store={ store }>
+        <Routers />
+      </Provider>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  }
-});
