@@ -11,11 +11,18 @@ import {
 } from 'react-native-fbsdk';
 
 import * as firebase from 'firebase';
-import firebaseRef from '../../firebase';
+// import firebaseRef from '../../firebase';
 
-firebaseRef();
+// firebaseRef();
 
 class FacebookLogin extends React.Component {
+  constructor(props) {
+    super(props);
+    AccessToken.getCurrentAccessToken().then(
+      token => console.log('token', token)
+    );
+  }
+
   render() {
     return (
       <View>
@@ -30,14 +37,31 @@ class FacebookLogin extends React.Component {
               } else {
                 AccessToken.getCurrentAccessToken().then(
                   (data) => {
-                    const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
-                    firebase.auth().signInWithCredential(credential).then((result) => {
-                      const userRef = firebase.database().ref(`/users/${result.uid}`);
-                      userRef.set({
-                        name: result.displayName,
-                        email: result.email,
-                        profilePic: result.photoURL
-                      });
+
+                    const credential = firebase.auth.FacebookAuthProvider
+                                               .credential(data.accessToken);
+
+                    firebase.auth().signInWithCredential(credential)
+                            .then((result) => {
+                              console.log(data);
+                              const userRef = firebase.database().ref(`/users/${data.userID}`);
+
+                              const name = result.displayName;
+                              const email = result.email;
+                              const profilePic = result.photoURL;
+
+                              userRef.set({
+                                name,
+                                email,
+                                profilePic
+                              });
+
+                              this.props.receiveCurrentUser({
+                                name,
+                                profilePic
+                              });
+
+                              this.props.navigation.navigate('Dashboard');
                     }, error => {
                       console.log(error);
                     });
