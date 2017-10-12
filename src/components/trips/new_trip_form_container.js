@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { receiveSingleTrip } from '../../actions/trip_actions';
+import { createTrip } from '../../actions/trip_actions';
 import NewTripForm from './new_trip_form';
 
 const mapStateToProps = state => ({
@@ -7,7 +7,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  receiveSingleTrip: trip => dispatch(receiveSingleTrip(trip))
+  createTrip: (trip, userID) => dispatch(createTrip(trip, userID))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewTripForm);
