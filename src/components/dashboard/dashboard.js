@@ -10,10 +10,16 @@ import {
   AccessToken
 } from 'react-native-fbsdk';
 import Swipeout from 'react-native-swipeout';
+import { ActionButton } from 'react-native-material-ui';
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
+    this.redirectToTripForm = this.redirectToTripForm.bind(this);
+  }
+
+  redirectToTripForm() {
+    this.props.navigation.navigate('TripForm');
   }
 
   render() {
@@ -46,6 +52,7 @@ class Dashboard extends React.Component {
           </View>
         </Swipeout>
         <LoginButton />
+        <ActionButton onPress={this.redirectToTripForm} />
       </View>
     );
   }
