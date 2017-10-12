@@ -2,7 +2,8 @@ import React from 'react';
 import { TextInput,
          View,
          Text,
-         Button } from 'react-native';
+         Button,
+         FlatList } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import * as firebase from 'firebase';
 
@@ -12,10 +13,12 @@ class NewTripForm extends React.Component {
     this.state = {
       title: '',
       startDate: '',
-      endDate: ''
+      endDate: '',
+      errors: []
     };
-    this.handlePress = this.handlePress.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.redirectToDashboard = this.redirectToDashboard.bind(this);
+    this.postToFirebase = this.postToFirebase.bind(this);
   }
 
   handleChange(value, inputType) {
@@ -26,9 +29,26 @@ class NewTripForm extends React.Component {
     this.props.navigation.navigate('Dashboard');
   }
 
-  handlePress() {
+  handleSubmit() {
+    let errors = [];
+    if (!this.state.title) errors.push('You need a title!');
+    if (!this.state.startDate) errors.push('When is the start date?');
+    if (!this.state.endDate) errors.push('When is the end date?');
+    this.setState({ errors }, () => {
+      if (this.state.errors.length === 0) {
+        console.log(this.state.errors.length);
+        this.postToFirebase();
+      }
+    });
+
+  }
+
+  postToFirebase() {
     const userID = this.props.currentUser.id;
-    this.props.createTrip(this.state, userID);
+    this.setState({ title: this.state.title,
+      startDate: this.state.startDate,
+      endDate: this.state.endDate }, () =>
+      this.props.createTrip(this.state, userID));
   }
 
   render() {
@@ -65,7 +85,10 @@ class NewTripForm extends React.Component {
           />
 
         <Button title='Create!'
-                onPress={ this.handlePress }/>
+                onPress={ this.handleSubmit }/>
+
+        <FlatList data={ this.state.errors }
+                  renderItem={ ({ item }) => <Text>{ item }</Text>} />
 
         <Button title='Dashboard'
                 onPress={ this.redirectToDashboard }/>
