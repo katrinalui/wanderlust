@@ -28,21 +28,7 @@ class NewTripForm extends React.Component {
 
   handlePress() {
     const userID = this.props.currentUser.id;
-    const tripRef = firebase.database().ref('/trips').push();
-    const key = tripRef.key;
-    const newTrip = {
-      id: key,
-      title: this.state.title,
-      startDate: this.state.startDate,
-      endDate: this.state.endDate,
-      ownerID: userID
-    };
-
-    tripRef.set(newTrip);
-
-    const userTripsRef = firebase.database()
-                                 .ref(`/users/${userID}/trips/${ key }`);
-    userTripsRef.set(newTrip.title);
+    this.props.createTrip(this.state, userID);
   }
 
   render() {
