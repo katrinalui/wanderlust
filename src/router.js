@@ -4,9 +4,11 @@ import LoginContainer from './components/fb_login/login_container';
 import DashboardContainer from './components/dashboard/dashboard_container';
 import TripMapContainer from './components/map/trip_map_container';
 import SplashContainer from './components/splash/splash_container';
+import TripFormContainer from './components/trips/trip_form_container';
 
 const Routers = StackNavigator(
   {
+    TripForm: { screen: TripFormContainer },
     Splash: { screen: SplashContainer },
     Login: { screen: LoginContainer },
     TripMap: { screen: TripMapContainer },

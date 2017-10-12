@@ -28,6 +28,7 @@ class Splash extends React.Component {
   render() {
     return (
       <View>
+        <Text> helllo</Text>
       </View>
     );
   }
