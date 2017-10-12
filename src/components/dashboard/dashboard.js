@@ -15,6 +15,11 @@ import { ActionButton } from 'react-native-material-ui';
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
+    this.redirectToTripForm = this.redirectToTripForm.bind(this);
+  }
+
+  redirectToTripForm() {
+    this.props.navigation.navigate('TripForm');
   }
 
   render() {
@@ -47,7 +52,7 @@ class Dashboard extends React.Component {
           </View>
         </Swipeout>
         <LoginButton />
-        <ActionButton />
+        <ActionButton onPress={this.redirectToTripForm} />
       </View>
     );
   }
