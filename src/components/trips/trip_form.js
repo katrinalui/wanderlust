@@ -68,7 +68,7 @@ class TripForm extends React.Component {
           confirmBtnText="Confirm"
           cancelBtnText="Cancel"
           onDateChange={ (date) => this.handleChange(date, 'endDate') }
-          minDate={ new Date }
+          minDate={ this.state.startDate || new Date }
           />
 
         <Button title='Create!'
