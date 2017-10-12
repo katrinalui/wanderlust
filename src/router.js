@@ -14,7 +14,11 @@ const Routers = StackNavigator(
     TripMap: { screen: TripMapContainer },
     Dashboard: { screen: DashboardContainer }
   },
-  { headerMode: 'none' }
+  { headerMode: 'none',
+  navigationOptions: {
+    gesturesEnabled: false
+    }
+  }
 );
 
 export default Routers;

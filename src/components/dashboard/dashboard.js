@@ -38,10 +38,11 @@ class Dashboard extends React.Component {
            Welcome, {this.props.currentUser.name}!
         </Text>
         <Swipeout
-          style={{width}}
           right={swipeoutBtns}>
           <View>
-            <Text>Spain 2017</Text>
+            <Text style={{width,
+                height: 60,
+                fontSize: 24}}>Spain 2017</Text>
           </View>
         </Swipeout>
         <LoginButton />
