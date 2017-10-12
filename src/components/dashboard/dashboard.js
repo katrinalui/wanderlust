@@ -10,6 +10,7 @@ import {
   AccessToken
 } from 'react-native-fbsdk';
 import Swipeout from 'react-native-swipeout';
+import { ActionButton } from 'react-native-material-ui';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -46,6 +47,7 @@ class Dashboard extends React.Component {
           </View>
         </Swipeout>
         <LoginButton />
+        <ActionButton />
       </View>
     );
   }
