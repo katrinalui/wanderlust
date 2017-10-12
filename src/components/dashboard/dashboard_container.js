@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import Dashboard from './dashboard';
-import { receiveAllTrips } from '../../actions/trip_actions';
+import { receiveAllTrips, destroyTrip } from '../../actions/trip_actions';
 import { selectUserTrips } from '../../reducers/selectors';
 
 const mapStateToProps = state => ({
@@ -9,7 +9,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  receiveAllTrips: trips => dispatch(receiveAllTrips(trips))
+  // receiveAllTrips: trips => dispatch(receiveAllTrips(trips))
+  // destroyTrip: tripID => dispatch(destroyTrip(tripID))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

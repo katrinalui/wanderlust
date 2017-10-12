@@ -18,3 +18,16 @@ export const postTrip = (trip, userID) => {
   return tripRef.set(newTrip)
     .then(() => tripRef.once('value', snap => { return snap; }));
 };
+
+export const deleteTrip = tripID => {
+  const tripRef = firebase.database().ref(`/trips/${tripID}`);
+  tripRef.once('value', snap => {
+    const trip = snap.val();
+    const ownerID = trip.ownerID;
+    const members = trip.members;
+
+    tripRef.remove();
+    firebase.database().ref(`/users/${ownerID}/trips/${tripID}`).remove();
+    // add code to remove trip from each member
+  });
+};
