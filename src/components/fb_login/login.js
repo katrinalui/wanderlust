@@ -62,17 +62,15 @@ class FacebookLogin extends React.Component {
                               const name = result.displayName;
                               const email = result.email;
                               const profilePic = result.photoURL;
-
-                              userRef.set({
+                              const userProfile = {
+                                id: data.userID,
                                 name,
                                 email,
                                 profilePic
-                              });
+                              }
+                              userRef.set(userProfile);
 
-                              this.props.receiveCurrentUser({
-                                name,
-                                profilePic
-                              });
+                              this.props.receiveCurrentUser(userProfile);
 
                               this.props.navigation.navigate('Dashboard');
                     }, error => {

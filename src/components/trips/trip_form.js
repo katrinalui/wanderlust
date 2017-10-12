@@ -4,6 +4,7 @@ import { TextInput,
          Text,
          Button } from 'react-native';
 import DatePicker from 'react-native-datepicker';
+import * as firebase from 'firebase';
 
 class TripForm extends React.Component {
   constructor(props) {
@@ -13,14 +14,32 @@ class TripForm extends React.Component {
       startDate: '',
       endDate: ''
     };
+    this.handlePress = this.handlePress.bind(this);
+    console.log('props!!', this.props);
   }
 
   handleChange(value, inputType) {
     this.setState({ [inputType]: value });
   }
 
+  handlePress() {
+    const userId = this.props.currentUser.id;
+    const tripRef = firebase.database().ref('/trips').push();
+    const key = tripRef.key;
+    const newTrip = {
+      id: key,
+      title: this.state.title,
+      startDate: this.state.startDate,
+      endDate: this.state.endDate,
+    };
+
+    tripRef.set(newTrip);
+
+    const userTripsRef = firebase.database().ref(`/users/${userId}/trips/${ key }`);
+    userTripsRef.set(true);
+  }
+
   render() {
-    console.log('state!!!', this.state);
     return (
       <View>
         <Text>Create My Trip</Text>
@@ -51,6 +70,9 @@ class TripForm extends React.Component {
           onDateChange={ (date) => this.handleChange(date, 'endDate') }
           minDate={ new Date }
           />
+
+        <Button title='Create!'
+                onPress={ this.handlePress }/>
       </View>
     );
   }
