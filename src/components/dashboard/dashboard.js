@@ -1,18 +1,20 @@
 import React from 'react';
 import {
   View,
-  Text
+  Text,
+  Dimensions
 } from 'react-native';
 
 import {
   LoginButton,
   AccessToken
 } from 'react-native-fbsdk';
+import Swipeout from 'react-native-swipeout';
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
-  } 
+  }
 
   render() {
     if (!this.props.currentUser) {
@@ -23,12 +25,25 @@ class Dashboard extends React.Component {
       );
     }
 
+    let swipeoutBtns = [
+      { text: 'Edit', backgroundColor: 'orange'},
+      { text: 'Delete', backgroundColor: 'red' }
+    ];
+
+    const { width } = Dimensions.get('window');
+
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Text>
            Welcome, {this.props.currentUser.name}!
         </Text>
-
+        <Swipeout
+          style={{width}}
+          right={swipeoutBtns}>
+          <View>
+            <Text>Spain 2017</Text>
+          </View>
+        </Swipeout>
         <LoginButton />
       </View>
     );

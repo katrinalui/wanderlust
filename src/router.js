@@ -8,8 +8,8 @@ import TripFormContainer from './components/trips/trip_form_container';
 
 const Routers = StackNavigator(
   {
-    TripForm: { screen: TripFormContainer },
     Splash: { screen: SplashContainer },
+    TripForm: { screen: TripFormContainer },
     Login: { screen: LoginContainer },
     TripMap: { screen: TripMapContainer },
     Dashboard: { screen: DashboardContainer }
