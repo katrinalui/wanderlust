@@ -8,13 +8,17 @@ import TripFormContainer from './components/trips/trip_form_container';
 
 const Routers = StackNavigator(
   {
-    TripForm: { screen: TripFormContainer },
     Splash: { screen: SplashContainer },
+    TripForm: { screen: TripFormContainer },
     Login: { screen: LoginContainer },
     TripMap: { screen: TripMapContainer },
     Dashboard: { screen: DashboardContainer }
   },
-  { headerMode: 'none' }
+  { headerMode: 'none',
+  navigationOptions: {
+    gesturesEnabled: false
+    }
+  }
 );
 
 export default Routers;
