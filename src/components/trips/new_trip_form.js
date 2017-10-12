@@ -6,7 +6,7 @@ import { TextInput,
 import DatePicker from 'react-native-datepicker';
 import * as firebase from 'firebase';
 
-class TripForm extends React.Component {
+class NewTripForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,15 +15,19 @@ class TripForm extends React.Component {
       endDate: ''
     };
     this.handlePress = this.handlePress.bind(this);
-    console.log('props!!', this.props);
+    this.redirectToDashboard = this.redirectToDashboard.bind(this);
   }
 
   handleChange(value, inputType) {
     this.setState({ [inputType]: value });
   }
 
+  redirectToDashboard() {
+    this.props.navigation.navigate('Dashboard');
+  }
+
   handlePress() {
-    const userId = this.props.currentUser.id;
+    const userID = this.props.currentUser.id;
     const tripRef = firebase.database().ref('/trips').push();
     const key = tripRef.key;
     const newTrip = {
@@ -31,12 +35,14 @@ class TripForm extends React.Component {
       title: this.state.title,
       startDate: this.state.startDate,
       endDate: this.state.endDate,
+      ownerID: userID
     };
 
     tripRef.set(newTrip);
 
-    const userTripsRef = firebase.database().ref(`/users/${userId}/trips/${ key }`);
-    userTripsRef.set(true);
+    const userTripsRef = firebase.database()
+                                 .ref(`/users/${userID}/trips/${ key }`);
+    userTripsRef.set(newTrip.title);
   }
 
   render() {
@@ -48,6 +54,7 @@ class TripForm extends React.Component {
           <TextInput placeholder="Add Title"
                      onChangeText={text => this.handleChange(text, 'title')}/>
         <Text>Start Date</Text>
+
         <DatePicker
           style={{width: 200}}
           date={ this.state.startDate }
@@ -73,9 +80,12 @@ class TripForm extends React.Component {
 
         <Button title='Create!'
                 onPress={ this.handlePress }/>
+
+        <Button title='Dashboard'
+                onPress={ this.redirectToDashboard }/>
       </View>
     );
   }
 }
 
-export default TripForm;
+export default NewTripForm;
