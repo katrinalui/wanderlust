@@ -2,15 +2,15 @@ import React from 'react';
 import {
   View,
   Text,
-  Dimensions
+  FlatList
 } from 'react-native';
 import {
   LoginButton,
   AccessToken
 } from 'react-native-fbsdk';
-import Swipeout from 'react-native-swipeout';
 import { ActionButton } from 'react-native-material-ui';
 import * as firebase from 'firebase';
+import DashboardItem from './dashboard_item';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -22,16 +22,7 @@ class Dashboard extends React.Component {
     this.props.navigation.navigate('NewTripForm');
   }
 
-  handleEditButton() {
-    console.log('inside edit!');
-  }
-
-  handleDeleteButton() {
-    console.log('inside delete!');
-  }
-
   render() {
-    console.log('props', this.props);
     if (!this.props.currentUser) {
       return (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -40,35 +31,17 @@ class Dashboard extends React.Component {
       );
     }
 
-    let swipeoutBtns = [
-      {
-        text: 'Edit',
-        backgroundColor: 'orange',
-        onPress: this.handleEditButton
-      },
-      {
-        text: 'Delete',
-        backgroundColor: 'red',
-        onPress: this.handleDeleteButton }
-    ];
-
-    const { width } = Dimensions.get('window');
-
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Text>
            Welcome, { this.props.currentUser.name }!
         </Text>
-        <Swipeout
-          right={swipeoutBtns}>
-          <View>
-            <Text style={{
-                width,
-                height: 60,
-                fontSize: 24}
-              }>Spain 2017</Text>
-          </View>
-        </Swipeout>
+
+        <FlatList data={ this.props.trips }
+                  renderItem={ ({ item }) =>
+                    <DashboardItem id={ Object.keys(item)[0]}
+                                   title={ Object.values(item)[0] }/> }/>
+
         <LoginButton />
         <ActionButton onPress={ this.redirectToTripForm } />
       </View>

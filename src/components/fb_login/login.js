@@ -51,14 +51,12 @@ class FacebookLogin extends React.Component {
                 this.setState({ isLoggedIn: true });
                 AccessToken.getCurrentAccessToken().then(
                   (data) => {
-
                     const credential = firebase.auth.FacebookAuthProvider
                                                .credential(data.accessToken);
 
                     firebase.auth().signInWithCredential(credential)
                             .then((result) => {
                               const userRef = firebase.database().ref(`/users/${data.userID}`);
-
                               const name = result.displayName;
                               const email = result.email;
                               const profilePic = result.photoURL;
