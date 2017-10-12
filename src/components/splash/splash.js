@@ -18,9 +18,7 @@ class Splash extends React.Component {
                 .on('value', (snap) => this.props.receiveCurrentUser(snap.val()));
         this.props.navigation.navigate('Dashboard');
       } else {
-        // setTimeout(() => {
-          this.props.navigation.navigate('Login');
-        // }, 2000);
+        this.props.navigation.navigate('Login');
       }
     });
   }
@@ -28,7 +26,7 @@ class Splash extends React.Component {
   render() {
     return (
       <View>
-        <Text> helllo</Text>
+        <Text></Text>
       </View>
     );
   }

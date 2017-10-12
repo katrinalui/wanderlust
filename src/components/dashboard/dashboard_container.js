@@ -1,9 +1,10 @@
 import { connect } from 'react-redux';
 import Dashboard from './dashboard';
 import { receiveAllTrips } from '../../actions/trip_actions';
+import { selectUserTrips } from '../../reducers/selectors';
 
 const mapStateToProps = state => ({
-  trips: state.entities.trips,
+  trips: selectUserTrips(state),
   currentUser: state.ui.session.currentUser
 });
 
