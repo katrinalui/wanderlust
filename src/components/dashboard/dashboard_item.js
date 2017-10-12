@@ -1,7 +1,7 @@
 import React from 'react';
 import Swipeout from 'react-native-swipeout';
 import { Dimensions, View, Text } from 'react-native';
-
+import { deleteTrip } from '../../util/trip_api_util';
 
 const { width } = Dimensions.get('window');
 const style = {
@@ -13,15 +13,15 @@ const style = {
 class DashboardItem extends React.Component {
   constructor(props) {
     super(props);
-    console.log('props inside item', props);
+    this.handleDeleteButton = this.handleDeleteButton.bind(this);
   }
 
   handleEditButton() {
-    console.log('inside edit!');
+    console.log('inside edit!', this.props);
   }
 
   handleDeleteButton() {
-    console.log('inside delete!');
+    deleteTrip(this.props.id);
   }
 
   render() {
@@ -41,7 +41,7 @@ class DashboardItem extends React.Component {
       <Swipeout right={swipeoutBtns}>
         <View>
           <Text style={ style }>
-            Spain 2017
+            {this.props.title}
           </Text>
         </View>
       </Swipeout>

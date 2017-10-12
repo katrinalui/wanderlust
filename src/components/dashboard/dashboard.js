@@ -38,8 +38,10 @@ class Dashboard extends React.Component {
         </Text>
 
         <FlatList data={ this.props.trips }
+                  keyExtractor={item => Object.keys(item)[0]}
                   renderItem={ ({ item }) =>
-                    <DashboardItem id={ Object.keys(item)[0]}
+                    <DashboardItem
+                                   id={ Object.keys(item)[0]}
                                    title={ Object.values(item)[0] }/> }/>
 
         <LoginButton />
