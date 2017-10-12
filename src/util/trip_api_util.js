@@ -15,5 +15,6 @@ export const postTrip = (trip, userID) => {
                                .ref(`/users/${userID}/trips/${ key }`);
 
   userTripsRef.set(newTrip.title);
-  return tripRef.set(newTrip);
+  return tripRef.set(newTrip)
+    .then(() => tripRef.once('value', snap => { return snap; }));
 };

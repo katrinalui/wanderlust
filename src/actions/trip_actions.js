@@ -20,5 +20,5 @@ export const removeTrip = (trip) => ({
 });
 
 export const createTrip = (trip, userID) => dispatch => (
-  console.log(postTrip(trip, userID))
+  postTrip(trip, userID).then(trip => dispatch(receiveSingleTrip(trip.val())))
 );
