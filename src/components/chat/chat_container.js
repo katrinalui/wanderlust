@@ -4,7 +4,6 @@ import { postMessage } from '../../util/chat_api_util';
 
 const mapStateToProps = state => ({
   currentUser: state.ui.session.currentUser
-
 });
 
 const mapDispatchToProps = dispatch => ({
