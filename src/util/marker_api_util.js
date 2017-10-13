@@ -14,5 +14,6 @@ export const postMarker = (coordinate, tripID) => {
   };
 
   return markerRef.set(newMarker)
-                  .then(() => markerRef.once('value', snap => { return snap; }));
+                  .then(() => markerRef
+                  .once('value', snap => { return snap; }));
 };
