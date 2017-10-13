@@ -50,24 +50,32 @@ class FacebookLogin extends React.Component {
               } else {
                 this.setState({ isLoggedIn: true });
                 AccessToken.getCurrentAccessToken().then(
-                  (data) => {
+                  (token) => {
                     const credential = firebase.auth.FacebookAuthProvider
-                                               .credential(data.accessToken);
+                                               .credential(token.accessToken);
 
                     firebase.auth().signInWithCredential(credential)
                             .then((result) => {
-                              const userRef = firebase.database().ref(`/users/${data.userID}`);
-                              const name = result.displayName;
-                              const email = result.email;
-                              const profilePic = result.photoURL;
-                              const userProfile = {
-                                id: data.userID,
-                                name,
-                                email,
-                                profilePic
-                              }
-                              userRef.set(userProfile);
-                              this.props.receiveCurrentUser(userProfile);
+                              const userRef = firebase.database().ref(`/users/${token.userID}`);
+
+                              userRef.once('value', snap => {
+                                if (!snap.val()) {
+                                  const name = result.displayName;
+                                  const email = result.email;
+                                  const profilePic = result.photoURL;
+                                  const userProfile = {
+                                    id: token.userID,
+                                    name,
+                                    email,
+                                    profilePic
+                                  };
+                                  userRef.set(userProfile);
+                                  this.props.receiveCurrentUser(userProfile);
+                                } else {
+                                  firebase.database().ref(`/users/${token.userID}`)
+                                          .on('value', (snap) => this.props.receiveCurrentUser(snap.val()));
+                                }
+                              });
 
                               this.props.navigation.navigate('Dashboard');
                     }, error => {
