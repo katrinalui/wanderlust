@@ -6,9 +6,11 @@ import TripMapContainer from './components/map/trip_map_container';
 import SplashContainer from './components/splash/splash_container';
 import NewTripFormContainer from './components/trips/new_trip_form_container';
 import EditTripFormContainer from './components/trips/edit_trip_form_container';
+import ChatContainer from './components/chat/chat_container';
 
 const Routers = StackNavigator(
   {
+    Chat: { screen: ChatContainer },
     Splash: { screen: SplashContainer },
     Login: { screen: LoginContainer },
     NewTripForm: { screen: NewTripFormContainer },
