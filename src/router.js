@@ -10,9 +10,9 @@ import EditTripFormContainer from './components/trips/edit_trip_form_container';
 const Routers = StackNavigator(
   {
     Splash: { screen: SplashContainer },
+    Login: { screen: LoginContainer },
     NewTripForm: { screen: NewTripFormContainer },
     EditTripForm: { screen: EditTripFormContainer },
-    Login: { screen: LoginContainer },
     TripMap: { screen: TripMapContainer },
     Dashboard: { screen: DashboardContainer }
   },
