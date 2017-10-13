@@ -10,7 +10,7 @@ firebaseRef();
 
 const uiTheme = {
     palette: {
-      primaryColor: COLOR.blue900,
+      primaryColor: COLOR.blue500,
       accentColor: COLOR.blue700,
     },
     toolbar: {
