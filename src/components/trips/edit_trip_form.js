@@ -1,20 +1,77 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-import DatPicker from 'react-native-datepicker';
+import { View, Text, TextInput, Button, FlatList } from 'react-native';
+import DatePicker from 'react-native-datepicker';
+import * as firebase from 'firebase';
 
 class EditTripForm extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      title: '',
+      startDate: '',
+      endDate: '',
+      errors: []
+    };
+    console.log('props inside edittripform', props);
+    this.redirectToDashboard = this.redirectToDashboard.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    const editedTripRef = firebase.database()
+                                  .ref(`/trips/${this.props.navigation.state.params.id}`)
+                                  .once('value', snap => this.setState(snap.val()));
+  }
+
+
+  handleChange(value, inputType) {
+    this.setState({ [inputType]: value });
+  }
+
+  redirectToDashboard() {
+    this.props.navigation.navigate('Dashboard');
+  }
+
+  handleSubmit() {
+    let errors = [];
+    if (!this.state.title) errors.push('You need a title!');
+    if (!this.state.startDate) errors.push('When is the start date?');
+    if (!this.state.endDate) errors.push('When is the end date?');
+    this.setState({ errors }, () => {
+      if (this.state.errors.length === 0) {
+        console.log(this.state.errors.length);
+        this.updateInFirebase();
+      }
+    });
+  }
+
+  updateInFirebase() {
+    const userID = this.props.currentUser.id;
+    this.setState({ title: this.state.title,
+      startDate: this.state.startDate,
+      endDate: this.state.endDate }, () =>
+      this.props.editTrip(this.state));
   }
 
   render() {
+    if (!this.state.title) {
+      return (
+        <View>
+          <Text>
+            Loading...
+          </Text>
+        </View>
+      );
+    }
+
     return (
       <View>
         <Text>Edit My Trip</Text>
 
         <Text>Title</Text>
-        <TextInput placeholder="Add Title"
-          onChangeText={text => this.handleChange(text, 'title')}/>
+        <TextInput value={ this.state.title }
+                   placeholder="Add Title"
+                   onChangeText={text => this.handleChange(text, 'title')}/>
         <Text>Start Date</Text>
 
         <DatePicker
@@ -41,11 +98,17 @@ class EditTripForm extends React.Component {
           />
 
         <Button title='Create!'
-          onPress={ this.handlePress }/>
+          onPress={ this.handleSubmit }/>
+
+        <FlatList data={ this.state.errors }
+                  renderItem={ ({ item }) => <Text>{ item }</Text>} />
 
         <Button title='Dashboard'
           onPress={ this.redirectToDashboard }/>
+
       </View>
     );
   }
 }
+
+export default EditTripForm;

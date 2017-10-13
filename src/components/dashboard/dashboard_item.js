@@ -14,10 +14,11 @@ class DashboardItem extends React.Component {
   constructor(props) {
     super(props);
     this.handleDeleteButton = this.handleDeleteButton.bind(this);
+    this.handleEditButton = this.handleEditButton.bind(this);
   }
 
   handleEditButton() {
-    console.log('inside edit!', this.props);
+    this.props.navigation.navigate('EditTripForm', { id: this.props.id });
   }
 
   handleDeleteButton() {

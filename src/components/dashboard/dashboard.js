@@ -42,7 +42,8 @@ class Dashboard extends React.Component {
                   renderItem={ ({ item }) =>
                     <DashboardItem
                                    id={ Object.keys(item)[0]}
-                                   title={ Object.values(item)[0] }/> }/>
+                                   title={ Object.values(item)[0] }
+                                   navigation={ this.props.navigation }/> }/>
 
         <LoginButton />
         <ActionButton onPress={ this.redirectToTripForm } />

@@ -69,8 +69,7 @@ class NewTripForm extends React.Component {
           confirmBtnText="Confirm"
           cancelBtnText="Cancel"
           onDateChange={ (date) => this.handleChange(date, 'startDate') }
-          minDate={ new Date }
-          />
+          minDate={ new Date } />
 
         <Text>End Date</Text>
         <DatePicker
@@ -81,17 +80,16 @@ class NewTripForm extends React.Component {
           confirmBtnText="Confirm"
           cancelBtnText="Cancel"
           onDateChange={ (date) => this.handleChange(date, 'endDate') }
-          minDate={ this.state.startDate || new Date }
-          />
+          minDate={ this.state.startDate || new Date } />
 
         <Button title='Create!'
-                onPress={ this.handleSubmit }/>
+                onPress={ this.handleSubmit } />
 
         <FlatList data={ this.state.errors }
                   renderItem={ ({ item }) => <Text>{ item }</Text>} />
 
         <Button title='Dashboard'
-                onPress={ this.redirectToDashboard }/>
+                onPress={ this.redirectToDashboard } />
       </View>
     );
   }
