@@ -12,7 +12,6 @@ class EditTripForm extends React.Component {
       endDate: '',
       errors: []
     };
-    console.log('props inside edittripform', props);
     this.redirectToDashboard = this.redirectToDashboard.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -54,15 +53,7 @@ class EditTripForm extends React.Component {
   }
 
   render() {
-    if (!this.state.title) {
-      return (
-        <View>
-          <Text>
-            Loading...
-          </Text>
-        </View>
-      );
-    }
+    const errors = this.state.errors.map((el, i) => { return { [i]: el }; });
 
     return (
       <View>
@@ -97,11 +88,12 @@ class EditTripForm extends React.Component {
           minDate={ this.state.startDate || new Date }
           />
 
-        <Button title='Create!'
+        <Button title='Edit'
           onPress={ this.handleSubmit }/>
 
-        <FlatList data={ this.state.errors }
-                  renderItem={ ({ item }) => <Text>{ item }</Text>} />
+        <FlatList data={ errors }
+                  keyExtractor={item => Object.keys(item)[0]}
+                  renderItem={ ({ item }) => <Text>{ Object.values(item)[0] }</Text>} />
 
         <Button title='Dashboard'
           onPress={ this.redirectToDashboard }/>
