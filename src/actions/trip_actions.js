@@ -1,4 +1,4 @@
-import { postTrip, deleteTrip } from '../util/trip_api_util';
+import { postTrip, deleteTrip, updateTrip } from '../util/trip_api_util';
 
 export const RECEIVE_ALL_TRIPS = "RECEIVE_ALL_TRIPS";
 export const RECEIVE_SINGLE_TRIP = "RECEIVE_SINGLE_TRIP";
@@ -23,6 +23,7 @@ export const createTrip = (trip, userID) => dispatch => (
   postTrip(trip, userID).then(trip => dispatch(receiveSingleTrip(trip.val())))
 );
 
-export const destroyTrip = (tripID) => dispatch => (
-  deleteTrip(tripID)
+export const editTrip = (trip) => dispatch => (
+  updateTrip(trip)
+  // .then(trip => dispatch(receiveSingleTrip(trip.val())))
 );

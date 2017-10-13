@@ -9,7 +9,6 @@ import {
 
 import * as firebase from 'firebase';
 
-
 class Splash extends React.Component {
   componentDidMount() {
     AccessToken.getCurrentAccessToken().then(token => {

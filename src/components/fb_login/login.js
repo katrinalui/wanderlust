@@ -67,7 +67,6 @@ class FacebookLogin extends React.Component {
                                 profilePic
                               }
                               userRef.set(userProfile);
-
                               this.props.receiveCurrentUser(userProfile);
 
                               this.props.navigation.navigate('Dashboard');
