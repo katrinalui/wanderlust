@@ -2,7 +2,8 @@ import React from 'react';
 import {
   View,
   Text,
-  FlatList
+  FlatList,
+  StyleSheet
 } from 'react-native';
 import {
   LoginButton,
@@ -25,15 +26,15 @@ class Dashboard extends React.Component {
   render() {
     if (!this.props.currentUser) {
       return (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <Text>Loading...</Text>
+        <View style={ styles.content }>
+          <Text style={ styles.h1 }>Loading...</Text>
         </View>
       );
     }
 
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>
+      <View style={ styles.content }>
+        <Text style={ styles.h1 }>
            Welcome, { this.props.currentUser.name }!
         </Text>
 
@@ -53,3 +54,20 @@ class Dashboard extends React.Component {
 }
 
 export default Dashboard;
+
+const styles = StyleSheet.create({
+  content: {
+    paddingTop: 30,
+    paddingBottom: 30,
+    backgroundColor: 'white',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  h1: {
+    fontWeight: '700',
+    alignSelf: 'center',
+    color: '#431833',
+    fontSize: 24
+  }
+});
