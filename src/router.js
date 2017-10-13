@@ -11,11 +11,11 @@ import ChatContainer from './components/chat/chat_container';
 const Routers = StackNavigator(
   {
     Splash: { screen: SplashContainer },
+    TripMap: { screen: TripMapContainer },
     Chat: { screen: ChatContainer },
     Login: { screen: LoginContainer },
     NewTripForm: { screen: NewTripFormContainer },
     EditTripForm: { screen: EditTripFormContainer },
-    TripMap: { screen: TripMapContainer },
     Dashboard: { screen: DashboardContainer }
   },
   { headerMode: 'none',
