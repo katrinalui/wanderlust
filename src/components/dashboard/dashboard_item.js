@@ -1,6 +1,6 @@
 import React from 'react';
 import Swipeout from 'react-native-swipeout';
-import { Dimensions, View, Text } from 'react-native';
+import { Dimensions, View, Text, Button } from 'react-native';
 import { deleteTrip } from '../../util/trip_api_util';
 
 const { width } = Dimensions.get('window');
@@ -15,6 +15,7 @@ class DashboardItem extends React.Component {
     super(props);
     this.handleDeleteButton = this.handleDeleteButton.bind(this);
     this.handleEditButton = this.handleEditButton.bind(this);
+    this.handlePress = this.handlePress.bind(this);
   }
 
   handleEditButton() {
@@ -23,6 +24,10 @@ class DashboardItem extends React.Component {
 
   handleDeleteButton() {
     deleteTrip(this.props.id);
+  }
+
+  handlePress() {
+    this.props.navigation.navigate('Chat', { id: this.props.id });
   }
 
   render() {
@@ -41,7 +46,8 @@ class DashboardItem extends React.Component {
     return (
       <Swipeout right={swipeoutBtns}>
         <View>
-          <Text style={ style }>
+          <Text style={ style }
+                onPress={this.handlePress}>
             {this.props.title}
           </Text>
         </View>

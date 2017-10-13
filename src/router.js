@@ -10,8 +10,8 @@ import ChatContainer from './components/chat/chat_container';
 
 const Routers = StackNavigator(
   {
-    Chat: { screen: ChatContainer },
     Splash: { screen: SplashContainer },
+    Chat: { screen: ChatContainer },
     Login: { screen: LoginContainer },
     NewTripForm: { screen: NewTripFormContainer },
     EditTripForm: { screen: EditTripFormContainer },
