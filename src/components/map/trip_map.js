@@ -29,11 +29,12 @@ class TripMap extends React.Component {
   }
 
   componentWillMount() {
-    const markersRed = firebase.database()
+    const markersRef= firebase.database()
                                .ref(`/markers/${this.tripID}`);
-    markersRed.on('child_added', snap => this.setState(prevState => {
-      return { markers: prevState.markers.concat([snap.val()]) };
-    }));
+
+    markersRef.on('value', snap => {
+      this.setState({ markers: Object.values(snap.val())});
+    });
   }
 
   render() {
@@ -50,7 +51,7 @@ class TripMap extends React.Component {
               <MapView.Callout tooltip={ false }>
                 <View>
                   <Button title='Delete?'
-                          onPress={ this.handleDelete }/>
+                          onPress={ (e) => this.handleDelete(e, marker.id) }/>
                 </View>
 
               </MapView.Callout>
@@ -68,8 +69,10 @@ class TripMap extends React.Component {
     this.props.postMarker(e.nativeEvent.coordinate, this.tripID);
   }
 
-  handleDelete() {
-    console.log('deletedddd');
+  handleDelete(e, markerID) {
+    console.log(markerID);
+    const markerRef = firebase.database().ref(`/markers/${this.tripID}/${markerID}`);
+    markerRef.remove();
   }
 
 
