@@ -34,6 +34,12 @@ class NewTripForm extends React.Component {
     if (!this.state.title) errors.push('You need a title!');
     if (!this.state.startDate) errors.push('When is the start date?');
     if (!this.state.endDate) errors.push('When is the end date?');
+
+    if (this.state.endDate && this.state.startDate) {
+      if (new Date(this.state.endDate) - new Date(this.state.startDate) < 0) {
+        errors.push('Start date must be after end date');
+      }
+    }
     this.setState({ errors }, () => {
       if (this.state.errors.length === 0) {
         console.log(this.state.errors.length);
@@ -52,6 +58,8 @@ class NewTripForm extends React.Component {
   }
 
   render() {
+    const errors = this.state.errors.map((el, i) => { return { [i]: el }; });
+
     return (
       <View>
         <Text>Create My Trip</Text>
@@ -82,11 +90,12 @@ class NewTripForm extends React.Component {
           onDateChange={ (date) => this.handleChange(date, 'endDate') }
           minDate={ this.state.startDate || new Date } />
 
-        <Button title='Create!'
+        <Button title='Create'
                 onPress={ this.handleSubmit } />
 
-        <FlatList data={ this.state.errors }
-                  renderItem={ ({ item }) => <Text>{ item }</Text>} />
+        <FlatList data={ errors }
+                  keyExtractor={item => Object.keys(item)[0]}
+                  renderItem={ ({ item }) => <Text>{ Object.values(item)[0] }</Text>} />
 
         <Button title='Dashboard'
                 onPress={ this.redirectToDashboard } />
