@@ -56,10 +56,10 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>UIAppFonts</key>
 	<array>
-		<string/>
+		<string></string>
 		<string>Entypo.ttf</string>
 		<string>EvilIcons.ttf</string>
 		<string>Feather.ttf</string>
@@ -74,7 +74,6 @@
 		<string>Roboto-Light.ttf</string>
 		<string>Roboto-Regular.ttf</string>
 		<string>Roboto-Thin.ttf</string>
-		<string>rubicon-icon-font.ttf</string>
 		<string>Rubik-Black.ttf</string>
 		<string>Rubik-BlackItalic.ttf</string>
 		<string>Rubik-Bold.ttf</string>

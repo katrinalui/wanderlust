@@ -12,6 +12,7 @@ import {
 
 import * as firebase from 'firebase';
 import Message from './message';
+import TripToolbar from '../trips/trip_toolbar';
 
 const window = Dimensions.get('window');
 
@@ -49,7 +50,7 @@ class Chat extends React.Component {
   }
 
   redirectToMap() {
-    this.props.navigation.navigate("TripMap", { id: this.tripID })
+    this.props.navigation.navigate("TripMap", { id: this.tripID });
   }
 
   render() {
@@ -57,7 +58,13 @@ class Chat extends React.Component {
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <View style={{flex: 1, justifyContent: 'center'}}>
-          <Button title="Map" onPress={this.redirectToMap}/>
+          <TripToolbar
+            type="chat"
+            tripID={this.tripID}
+            title={this.props.currentUser.trips[this.tripID]}
+            navigation={this.props.navigation}
+          />
+
           <FlatList
             keyExtractor={item => item.id}
             data={this.state.messages}
@@ -91,7 +98,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginVertical: 5,
     paddingVertical: 5,
-    // paddingHorizontal: 15,
+    paddingHorizontal: 15,
     width: window.width - 30,
   }
 });
