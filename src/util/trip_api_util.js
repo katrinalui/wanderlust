@@ -20,8 +20,6 @@ export const postTrip = (trip, userID) => {
 };
 
 export const updateTrip = (trip) => {
-  console.log('inside util', trip);
-
   const tripRef = firebase.database().ref(`/trips/${trip.id}`);
   const editedTrip = {
     id: trip.id,
@@ -37,7 +35,7 @@ export const updateTrip = (trip) => {
       memberTripsRef = firebase.database().ref(`/users/${memberID}/trips/${ trip.id }`);
       memberTripsRef.set(editedTrip.title);
     });
-    
+
     editedTrip['members'] = trip.members;
   }
 
@@ -61,10 +59,14 @@ export const deleteTrip = tripID => {
   tripRef.once('value', snap => {
     const trip = snap.val();
     const ownerID = trip.ownerID;
-    const members = trip.members;
 
     tripRef.remove();
     firebase.database().ref(`/users/${ownerID}/trips/${tripID}`).remove();
-    // add code to remove trip from each member
+    if (trip.members) {
+      Object.keys(trip.members).forEach(memberID => {
+        const memberTripsRef = firebase.database().ref(`/users/${memberID}/trips/${ trip.id }`);
+        memberTripsRef.remove();
+      });
+    }
   });
 };
