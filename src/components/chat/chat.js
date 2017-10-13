@@ -1,37 +1,45 @@
 import React from 'react';
 import {
-  StyleSheet,
-  Text,
   View,
-  KeyboardAvoidingView,
+  Text,
+  TextInput,
+  Button
 } from 'react-native';
-import { Screen, Title } from '@shoutem/ui';
+
+import * as firebase from 'firebase';
 
 class Chat extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     messages: [],
-  //   };
-  // }
-  //
-  // componentDidMount() {
-  //
-  // }
+  constructor(props) {
+    super(props);
+    this.state = {
+      body: ''
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(text) {
+    this.setState({ body: text });
+  }
+
+  handleSubmit() {
+    this.props.postMessage(this.state,
+                           this.props.currentUser,
+                           this.props.navigation.state.params.id);
+  }
 
   render() {
+    console.log(this.state);
     return (
-      <Screen>
-        <Title>trip name...</Title>
-        <KeyboardAvoidingView/>
-        <Mess
-      </Screen>
+      <View style={{flex: 1, justifyContent: 'center'}}>
+
+        <TextInput placeholder="Text here..."
+                   onChangeText={(text) => this.handleChange(text)}/>
+                 <Button title='Submit'
+                          onPress={this.handleSubmit}/>
+      </View>
     );
   }
 }
 
-// <GiftedChat
-//   messages={this.state.messages}
-//   onSend={(messages) => this.onSend(messages)}
-//   placeholder="Start Typing..."/>
 export default Chat;
