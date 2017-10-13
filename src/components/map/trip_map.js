@@ -2,7 +2,8 @@ import React from 'react';
 import {
   View,
   Text,
-  Dimensions
+  Dimensions,
+  Button
 } from 'react-native';
 
 import MapView from 'react-native-maps';
@@ -24,15 +25,14 @@ class TripMap extends React.Component {
     this.tripID = this.props.navigation.state.params.id;
     this.state = { region: initialRegion,
                    markers: [] };
-    this.handlePress = this.handlePress.bind(this);
+    this.handleMapPress = this.handleMapPress.bind(this);
   }
 
   componentWillMount() {
     const markersRed = firebase.database()
                                .ref(`/markers/${this.tripID}`);
     markersRed.on('child_added', snap => this.setState(prevState => {
-      console.log('inside snap');
-      return { markers: prevState.markers.concat([snap.val()])};
+      return { markers: prevState.markers.concat([snap.val()]) };
     }));
   }
 
@@ -40,20 +40,36 @@ class TripMap extends React.Component {
     return (
       <View>
         <MapView
-          onLongPress = { (e) => this.handlePress(e) }
+          onLongPress={ (e) => this.handleMapPress(e) }
           style={ { height, width } }
           initialRegion={ this.state.region } >
           { this.state.markers.map(marker => (
-            <MapView.Marker coordinate={ marker.latlng }/>
+            <MapView.Marker coordinate={ marker.latlng }
+                            onPress={ this.handleMarkerPress }>
+
+              <MapView.Callout tooltip={ false }>
+                <View>
+                  <Button title='Delete?'
+                          onPress={ this.handleDelete }/>
+                </View>
+
+              </MapView.Callout>
+
+
+            </MapView.Marker>
           ))}
         </MapView>
       </View>
     );
   }
 
-  handlePress(e) {
+  handleMapPress(e) {
     console.log(e.nativeEvent.coordinate);
     this.props.postMarker(e.nativeEvent.coordinate, this.tripID);
+  }
+
+  handleDelete() {
+    console.log('deletedddd');
   }
 
 
