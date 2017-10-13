@@ -5,11 +5,15 @@ import {
   TextInput,
   Button,
   FlatList,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  StyleSheet,
+  Dimensions
 } from 'react-native';
 
 import * as firebase from 'firebase';
 import Message from './message';
+
+const window = Dimensions.get('window');
 
 class Chat extends React.Component {
   constructor(props) {
@@ -46,7 +50,7 @@ class Chat extends React.Component {
   render() {
     console.log(this.state);
     return (
-      <KeyboardAvoidingView behavior="padding">
+      <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <View style={{flex: 1, justifyContent: 'center'}}>
           <FlatList
             keyExtractor={item => item.id}
@@ -55,6 +59,7 @@ class Chat extends React.Component {
           />
 
             <TextInput placeholder="Text here..."
+                       style={styles.input}
                        value={this.state.body}
                        onChangeText={(text) => this.handleChange(text)}/>
                      <Button title='Submit'
@@ -66,3 +71,21 @@ class Chat extends React.Component {
 }
 
 export default Chat;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  input: {
+    height: 50,
+    borderRadius: 2,
+    backgroundColor: '#fff',
+    marginHorizontal: 10,
+    marginVertical: 5,
+    paddingVertical: 5,
+    // paddingHorizontal: 15,
+    width: window.width - 30,
+  }
+});

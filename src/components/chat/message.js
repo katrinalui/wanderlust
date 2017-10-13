@@ -8,7 +8,7 @@ const Message = (props) => {
     <View>
       <View>
           <Text>{ author }</Text>
-          <Image source={{uri: image }} />
+          <Image source={{uri: image }} style={{height: 40, width: 40, borderRadius: 40/2}}/>
       </View>
       <Text>{ body }</Text>
   </View>
