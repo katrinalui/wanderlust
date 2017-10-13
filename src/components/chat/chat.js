@@ -25,6 +25,7 @@ class Chat extends React.Component {
     this.tripID = props.navigation.state.params.id;
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.redirectToMap = this.redirectToMap.bind(this);
   }
 
   componentWillMount() {
@@ -47,11 +48,16 @@ class Chat extends React.Component {
     this.setState({ body: '' });
   }
 
+  redirectToMap() {
+    this.props.navigation.navigate("TripMap", { id: this.tripID })
+  }
+
   render() {
     console.log(this.state);
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <View style={{flex: 1, justifyContent: 'center'}}>
+          <Button title="Map" onPress={this.redirectToMap}/>
           <FlatList
             keyExtractor={item => item.id}
             data={this.state.messages}
