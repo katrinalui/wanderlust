@@ -10,34 +10,25 @@ import ChatContainer from './components/chat/chat_container';
 
 const Routers = StackNavigator(
   {
-    Splash: { screen: SplashContainer },
-    Dashboard: { screen: DashboardContainer },
-    Chat: {
-      screen: ChatContainer,
+    Splash: {
+      screen: SplashContainer,
       navigationOptions: {
-        gesturesEnabled: true
+        gesturesEnabled: false
       }
     },
+    Dashboard: {
+      screen: DashboardContainer,
+      navigationOptions: {
+        gesturesEnabled: false
+      }
+    },
+    Chat: { screen: ChatContainer },
     TripMap: { screen: TripMapContainer },
-    NewTripForm: {
-      screen: NewTripFormContainer,
-      navigationOptions: {
-        gesturesEnabled: true
-      }
-    },
-    EditTripForm: {
-      screen: EditTripFormContainer,
-      navigationOptions: {
-        gesturesEnabled: true
-      }
-    },
+    NewTripForm: { screen: NewTripFormContainer },
+    EditTripForm: { screen: EditTripFormContainer },
     Login: { screen: LoginContainer }
   },
-  { headerMode: 'none',
-  navigationOptions: {
-    gesturesEnabled: false
-    }
-  }
+  { headerMode: 'none' }
 );
 
 export default Routers;
