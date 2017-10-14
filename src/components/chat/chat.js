@@ -32,10 +32,9 @@ class Chat extends React.Component {
   componentWillMount() {
     const messagesRef = firebase.database()
                                 .ref(`/messages/${this.tripID}`);
-    messagesRef.on("child_added", snap => this.setState(prevState => {
-      console.log(prevState);
-       return { messages: prevState.messages.concat([snap.val()]) };
-     }));
+    messagesRef.on("value", snap => this.setState({
+      messages: Object.values(snap.val())
+    }));
   }
 
   handleChange(text) {
@@ -54,7 +53,6 @@ class Chat extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <View style={{flex: 1, justifyContent: 'center'}}>
@@ -71,12 +69,12 @@ class Chat extends React.Component {
             renderItem={item => <Message message={item} />}
           />
 
-            <TextInput placeholder="Text here..."
-                       style={styles.input}
-                       value={this.state.body}
-                       onChangeText={(text) => this.handleChange(text)}/>
-                     <Button title='Submit'
-                              onPress={this.handleSubmit}/>
+          <TextInput placeholder="Text here..."
+                     style={styles.input}
+                     value={this.state.body}
+                     onChangeText={(text) => this.handleChange(text)}/>
+                   <Button title='Submit'
+                            onPress={this.handleSubmit}/>
         </View>
       </KeyboardAvoidingView>
     );

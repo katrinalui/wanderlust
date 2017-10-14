@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 
 import MapView from 'react-native-maps';
+import TripToolbar from '../trips/trip_toolbar';
 
 import * as firebase from 'firebase';
 
@@ -40,6 +41,13 @@ class TripMap extends React.Component {
   render() {
     return (
       <View>
+        <TripToolbar
+          type="map"
+          tripID={this.tripID}
+          title={this.props.navigation.state.params.title}
+          navigation={this.props.navigation}
+        />
+
         <MapView
           onLongPress={ (e) => this.handleMapPress(e) }
           style={ { height, width } }
@@ -65,12 +73,10 @@ class TripMap extends React.Component {
   }
 
   handleMapPress(e) {
-    console.log(e.nativeEvent.coordinate);
     this.props.postMarker(e.nativeEvent.coordinate, this.tripID);
   }
 
   handleDelete(e, markerID) {
-    console.log(markerID);
     const markerRef = firebase.database().ref(`/markers/${this.tripID}/${markerID}`);
     markerRef.remove();
   }
