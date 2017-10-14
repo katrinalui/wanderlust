@@ -19,7 +19,7 @@ const TripToolbar = props => {
       leftElement="menu"
       centerElement={title}
       rightElement={icon}
-      onRightElementPress={() => navigation.navigate(redirect, { id: tripID })}
+      onRightElementPress={() => navigation.navigate(redirect, { id: tripID, title: title })}
     />
   );
 };
