@@ -7,7 +7,8 @@ import {
   FlatList,
   KeyboardAvoidingView,
   StyleSheet,
-  Dimensions
+  Dimensions,
+  ScrollView
 } from 'react-native';
 
 import * as firebase from 'firebase';
@@ -62,7 +63,9 @@ class Chat extends React.Component {
             navigation={this.props.navigation}
           />
 
-        <View style={styles.chat}>
+        <ScrollView
+          contentContainerstyle={styles.chat}
+          scrollToEnd={true} >
           <FlatList
             keyExtractor={item => item.id}
             data={this.state.messages}
@@ -75,7 +78,8 @@ class Chat extends React.Component {
                      onChangeText={(text) => this.handleChange(text)}/>
            <Button title='Submit'
                     onPress={this.handleSubmit}/>
-        </View>
+
+        </ScrollView>
       </KeyboardAvoidingView>
     );
   }
