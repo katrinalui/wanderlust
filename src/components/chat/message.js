@@ -3,15 +3,16 @@ import { View, Text, Image } from 'react-native';
 
 const Message = (props) => {
   const { author, image, body } = props.message.item;
-  console.log(props);
   return (
     <View>
-      <View>
-          <Text>{ author }</Text>
-          <Image source={{uri: image }} style={{height: 40, width: 40, borderRadius: 40/2}}/>
+      <View style={{ flex: 1, flexDirection: 'row' }}>
+        <Image source={{uri: image }} style={{height: 40, width: 40, borderRadius: 40/2}}/>
+        <View style={{marginVertical: 15, marginLeft: 10}}>
+          <Text style={{fontWeight: 'bold'}}>{ author }</Text>
+          <Text>{ body }</Text>
+        </View>
       </View>
-      <Text>{ body }</Text>
-  </View>
+    </View>
   );
 };
 

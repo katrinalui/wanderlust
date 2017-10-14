@@ -7,7 +7,8 @@ import {
   FlatList,
   KeyboardAvoidingView,
   StyleSheet,
-  Dimensions
+  Dimensions,
+  ScrollView
 } from 'react-native';
 
 import * as firebase from 'firebase';
@@ -55,7 +56,6 @@ class Chat extends React.Component {
   render() {
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
-        <View style={{flex: 1, justifyContent: 'center'}}>
           <TripToolbar
             type="chat"
             tripID={this.tripID}
@@ -63,6 +63,9 @@ class Chat extends React.Component {
             navigation={this.props.navigation}
           />
 
+        <ScrollView
+          contentContainerstyle={styles.chat}
+          scrollToEnd={true} >
           <FlatList
             keyExtractor={item => item.id}
             data={this.state.messages}
@@ -73,9 +76,10 @@ class Chat extends React.Component {
                      style={styles.input}
                      value={this.state.body}
                      onChangeText={(text) => this.handleChange(text)}/>
-                   <Button title='Submit'
-                            onPress={this.handleSubmit}/>
-        </View>
+           <Button title='Submit'
+                    onPress={this.handleSubmit}/>
+
+        </ScrollView>
       </KeyboardAvoidingView>
     );
   }
@@ -88,6 +92,15 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    width: window.width,
+    marginHorizontal: 0
+  },
+  chat: {
+    flex: 1,
+    justifyContent: 'center',
+    width: window.width - 30,
+    marginHorizontal: 10,
+    marginTop: 10
   },
   input: {
     height: 50,
