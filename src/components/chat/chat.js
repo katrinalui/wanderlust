@@ -28,6 +28,7 @@ class Chat extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.redirectToMap = this.redirectToMap.bind(this);
+    this.scrollToEnd = this.scrollToEnd.bind(this);
   }
 
   componentWillMount() {
@@ -37,6 +38,10 @@ class Chat extends React.Component {
       messages: Object.values(snap.val())
     }));
   }
+  //
+  // componentDidUpdate() {
+  //   this.scrollToEnd();
+  // }
 
   handleChange(text) {
     this.setState({ body: text });
@@ -53,6 +58,10 @@ class Chat extends React.Component {
     this.props.navigation.navigate("TripMap", { id: this.tripID });
   }
 
+  scrollToEnd() {
+    this.flatListRef.scrollToEnd({animated: false});
+  }
+
   render() {
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -63,11 +72,11 @@ class Chat extends React.Component {
             navigation={this.props.navigation}
           />
 
-        <ScrollView
-          contentContainerstyle={styles.chat}
-          scrollToEnd={true} >
+        <View style={styles.chat} >
           <FlatList
             keyExtractor={item => item.id}
+            ref={ref => { this.flatListRef = ref; }}
+            onContentSizeChange={this.scrollToEnd}
             data={this.state.messages}
             renderItem={item => <Message message={item} />}
           />
@@ -75,11 +84,13 @@ class Chat extends React.Component {
           <TextInput placeholder="Text here..."
                      style={styles.input}
                      value={this.state.body}
+                     onFocus={this.scrollToEnd}
+                     onChange={this.scrollToEnd}
                      onChangeText={(text) => this.handleChange(text)}/>
            <Button title='Submit'
                     onPress={this.handleSubmit}/>
 
-        </ScrollView>
+        </View>
       </KeyboardAvoidingView>
     );
   }
