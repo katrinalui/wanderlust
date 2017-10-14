@@ -34,14 +34,12 @@ class Chat extends React.Component {
   componentWillMount() {
     const messagesRef = firebase.database()
                                 .ref(`/messages/${this.tripID}`);
-    messagesRef.on("value", snap => this.setState({
-      messages: Object.values(snap.val())
-    }));
+    messagesRef.on("value", snap => { if (snap.val()) {
+      this.setState({
+        messages: Object.values(snap.val())
+      });
+    }});
   }
-  //
-  // componentDidUpdate() {
-  //   this.scrollToEnd();
-  // }
 
   handleChange(text) {
     this.setState({ body: text });
@@ -79,16 +77,17 @@ class Chat extends React.Component {
             onContentSizeChange={this.scrollToEnd}
             data={this.state.messages}
             renderItem={item => <Message message={item} />}
-          />
+            />
 
-          <TextInput placeholder="Text here..."
-                     style={styles.input}
-                     value={this.state.body}
-                     onFocus={this.scrollToEnd}
-                     onChange={this.scrollToEnd}
-                     onChangeText={(text) => this.handleChange(text)}/>
-           <Button title='Submit'
-                    onPress={this.handleSubmit}/>
+          <TextInput placeholder="Send a message"
+            style={styles.input}
+            value={this.state.body}
+            multiline={true}
+            onFocus={this.scrollToEnd}
+            onChange={this.scrollToEnd}
+            onChangeText={(text) => this.handleChange(text)}/>
+          <Button title='Submit'
+            onPress={this.handleSubmit}/>
 
         </View>
       </KeyboardAvoidingView>
@@ -116,6 +115,7 @@ const styles = StyleSheet.create({
   input: {
     height: 50,
     borderRadius: 2,
+    fontSize: 18,
     backgroundColor: '#fff',
     marginHorizontal: 10,
     marginVertical: 5,
