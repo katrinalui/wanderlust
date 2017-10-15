@@ -23,13 +23,15 @@ class Chat extends React.Component {
     super(props);
     this.state = {
       body: '',
-      messages: []
+      messages: [],
+      submitButtonActive: false
     };
     this.tripID = props.navigation.state.params.id;
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.redirectToMap = this.redirectToMap.bind(this);
     this.scrollToEnd = this.scrollToEnd.bind(this);
+    this.submitButtonColor = this.submitButtonColor.bind(this);
   }
 
   componentWillMount() {
@@ -44,13 +46,20 @@ class Chat extends React.Component {
 
   handleChange(text) {
     this.setState({ body: text });
+    if (!text) {
+      this.setState({ submitButtonActive: false });
+    } else {
+      this.setState({ submitButtonActive: true });
+    }
   }
 
   handleSubmit() {
-    this.props.postMessage(this.state,
-                           this.props.currentUser,
-                           this.tripID);
-    this.setState({ body: '' });
+    if (this.state.submitButtonActive) {
+      this.props.postMessage(this.state,
+        this.props.currentUser,
+        this.tripID);
+        this.setState({ body: '', submitButtonActive: false });
+    }
   }
 
   redirectToMap() {
@@ -59,6 +68,14 @@ class Chat extends React.Component {
 
   scrollToEnd() {
     this.flatListRef.scrollToEnd({animated: false});
+  }
+
+  submitButtonColor() {
+    if (this.state.submitButtonActive) {
+      return '#1F2B4B';
+    } else {
+      return '#90939b';
+    }
   }
 
   render() {
@@ -90,7 +107,7 @@ class Chat extends React.Component {
               onChangeText={(text) => this.handleChange(text)}/>
             <Icon name='chevron-with-circle-right'
               size={ 34 }
-              color='#1F2B4B'
+              color={this.submitButtonColor()}
               onPress={this.handleSubmit}/>
           </View>
         </View>
