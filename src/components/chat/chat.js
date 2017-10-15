@@ -14,6 +14,7 @@ import {
 import * as firebase from 'firebase';
 import Message from './message';
 import TripToolbar from '../trips/trip_toolbar';
+import Icon from 'react-native-vector-icons/Entypo';
 
 const window = Dimensions.get('window');
 
@@ -80,16 +81,18 @@ class Chat extends React.Component {
             data={this.state.messages}
             renderItem={item => <Message message={item} />}
             />
-
-          <TextInput placeholder="Send a message"
-            style={styles.input}
-            value={this.state.body}
-            multiline={true}
-            onChange={this.scrollToEnd}
-            onChangeText={(text) => this.handleChange(text)}/>
-          <Button title='Submit'
-            onPress={this.handleSubmit}/>
-
+          <View style={styles.inputContainer}>
+            <TextInput placeholder="Send a message"
+              style={styles.input}
+              value={this.state.body}
+              multiline={true}
+              onChange={this.scrollToEnd}
+              onChangeText={(text) => this.handleChange(text)}/>
+            <Icon name='chevron-with-circle-right'
+              size={ 34 }
+              color='#1F2B4B'
+              onPress={this.handleSubmit}/>
+          </View>
         </View>
       </KeyboardAvoidingView>
     );
@@ -113,15 +116,20 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     paddingTop: 10
   },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 5
+  },
   input: {
-    height: 45,
+    height: 35,
     borderRadius: 2,
     fontSize: 18,
     backgroundColor: '#fff',
-    marginHorizontal: 10,
+    marginHorizontal: 8,
     marginVertical: 5,
     paddingVertical: 5,
     paddingHorizontal: 15,
-    width: window.width - 30,
+    width: window.width - 80,
   }
 });
