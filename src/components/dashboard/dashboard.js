@@ -26,19 +26,6 @@ class Dashboard extends React.Component {
     this.props.navigation.navigate('NewTripForm');
   }
 
-  _shareTextMessage () {
-    Share.share({
-      message: 'Join my trip plans at Wanderlust',
-      url: 'http://google.com'
-    })
-    .then(this._showResult)
-    .catch(err => console.log(err));
-  }
-
-  _showResult (result) {
-     console.log(result);
-   }
-
   render() {
     if (!this.props.currentUser) {
       return (
@@ -67,11 +54,6 @@ class Dashboard extends React.Component {
 
         <LoginButton />
         <ActionButton onPress={ this.redirectToTripForm } />
-        <TouchableHighlight onPress={this._shareTextMessage}>
-          <View style={styles.button}>
-            <Text>Click to share a Trip</Text>
-          </View>
-        </TouchableHighlight>
       </View>
     );
   }
@@ -95,13 +77,4 @@ const styles = StyleSheet.create({
     fontSize: 22,
     height: 70
   },
-  header: {
-
-  },
-  button: {
-    backgroundColor: 'white',
-    padding: 10,
-    margin: 10,
-    borderRadius: 5
-  }
 });
