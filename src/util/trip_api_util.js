@@ -47,7 +47,7 @@ export const updateTrip = (trip) => {
   const userTripsRef = firebase.database()
                                .ref(`/users/${trip.ownerID}/trips/${ trip.id }`);
   //
-  userTripsRef.set(editedTrip.title);
+  return userTripsRef.set(editedTrip.title);
   //
   // return tripRef.set(editedTrip)
   //   .then(() => tripRef.once('value', snap => { return snap; }));
