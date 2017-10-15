@@ -26,6 +26,7 @@ class TripMap extends React.Component {
                      longitudeDelta: 0.0421
                    }};
     this.handleMapPress = this.handleMapPress.bind(this);
+    this.handleRegionChange = this.handleRegionChange.bind(this);
   }
 
   componentWillMount() {
@@ -46,7 +47,7 @@ class TripMap extends React.Component {
         <GooglePlacesAutocomplete placeholder='Search'
                                   minLength={ 2 }
                                   autoFocus={ false }
-                                  returnKeyType={'search'}
+                                  returnKeyType={ 'search' }
                                   listViewDisplayed={ 'auto' }
                                   fetchDetails={ true }
                                   getDefaultValue={() => {
@@ -60,7 +61,6 @@ class TripMap extends React.Component {
 
                                   onPress={(data, details = null) => {
                                     const { lat, lng } = details.geometry.location
-                                    console.log('state inside onPress', this.state);
                                     this.setState({
                                       region: {
                                         latitude: lat,
@@ -103,7 +103,7 @@ class TripMap extends React.Component {
           onLongPress={ (e) => this.handleMapPress(e) }
           style={ { height, width } }
           region={ this.state.region }
-          onRegionChange = { (e) => this.handleRegionChange(e) }>
+          onRegionChangeComplete = { this.handleRegionChange }>
           { this.state.markers.map(marker => (
             <MapView.Marker draggable
               coordinate={ marker.latlng }
@@ -127,6 +127,7 @@ class TripMap extends React.Component {
   }
 
   handleRegionChange(e) {
+    console.log('inside handle region change');
     this.setState({ region: e });
   }
 
