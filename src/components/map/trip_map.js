@@ -4,7 +4,11 @@ import {
   Text,
   Dimensions,
   Button,
-  Image
+  Image,
+  Modal,
+  TouchableHighlight,
+  TextInput,
+  Picker
 } from 'react-native';
 
 import MapView from 'react-native-maps';
@@ -24,9 +28,21 @@ class TripMap extends React.Component {
                      longitude: -122.4324,
                      latitudeDelta: 0.0922,
                      longitudeDelta: 0.0421
-                   }};
+                   },
+                   modalVisible: false,
+                   marker: {
+                     title: '',
+                     day: '1',
+                     longitude: null,
+                     latitude: null
+                   }
+                 };
     this.handleMapPress = this.handleMapPress.bind(this);
     this.handleRegionChange = this.handleRegionChange.bind(this);
+    this.handleMarkerTitleInput = this.handleMarkerTitleInput.bind(this);
+    this.handleMarkerDayInput = this.handleMarkerDayInput.bind(this);
+    this.handleModalClose = this.handleModalClose.bind(this);
+    this.handleModalSubmit = this.handleModalSubmit.bind(this);
   }
 
   componentWillMount() {
@@ -34,15 +50,20 @@ class TripMap extends React.Component {
                                .ref(`/markers/${this.tripID}`);
 
     markersRef.on('value', snap => {
+      console.log('inside on');
       if (snap.val()) {
+        console.log('inside if statment on');
         this.setState({ markers: Object.values(snap.val())});
+      } else {
+        this.setState({ markers: []});
       }
     });
   }
 
   render() {
+    console.log(this.state.markers);
     return (
-      <View>
+      <View style={ { marginTop: 22 } }>
 
         <GooglePlacesAutocomplete placeholder='Search'
                                   minLength={ 2 }
@@ -100,40 +121,129 @@ class TripMap extends React.Component {
                                   debounce={ 1000 } />
 
         <MapView
-          onLongPress={ (e) => this.handleMapPress(e) }
+          onLongPress={ this.handleMapPress }
           style={ { height, width } }
           region={ this.state.region }
           onRegionChangeComplete={ this.handleRegionChange }
           onRegionChange={ this.handleRegionChange }>
           { this.state.markers.map(marker => (
-            <MapView.Marker draggable
+            <MapView.Marker
               coordinate={ marker.latlng }
               onPress={ this.handleMarkerPress }
               pinColor='#00007f'>
-
               <MapView.Callout tooltip={ false }>
                 <View>
+                  <Text>{ marker.title }</Text>
+                  <Text>{ marker.day }</Text>
                   <Button title='Delete?'
                     onPress={ (e) => this.handleDelete(e, marker.id) }/>
                 </View>
-
               </MapView.Callout>
-
-
             </MapView.Marker>
           ))}
         </MapView>
+
+
+        <Modal
+          animationType="slide"
+          transparent={ true }
+          visible={ this.state.modalVisible } >
+
+            <View style={
+                { marginTop: height - 200,
+                  width,
+                  backgroundColor: 'white',
+                  flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center'}
+                } >
+              <View>
+                <View style={ { flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' } }>
+                  <Text style={ { fontSize: 16, paddingRight: 20 } }>Marker Title</Text>
+                  <TextInput style={ { width: 200 } }
+                             placeholder='Title...'
+                             onChange={ this.handleMarkerTitleInput } />
+                </View>
+
+                <View style={ { flex: 1, justifyContent: 'center', alignItems: 'center' } }>
+                  <Text style={ { fontSize: 16 } }>Which day will you be going?</Text>
+                  <Picker style={ {height: 100, width } }
+                    itemStyle={ { height: 100, fontSize: 12 } }
+                    selectedValue={ this.state.marker.day }
+                    onValueChange={ this.handleMarkerDayInput } >
+                    { ['1','2','3','4'].map(e => {
+                      return <Picker.Item label={ e } value={ e } />;
+                    })}
+                  </Picker>
+                </View>
+
+                <Button title='Submit'
+                        onPress={ this.handleModalSubmit } />
+
+                <TouchableHighlight onPress={ this.handleModalClose } >
+                  <Text>Close</Text>
+                </TouchableHighlight>
+              </View>
+         </View>
+
+        </Modal>
+
       </View>
     );
   }
 
+  handleModalSubmit () {
+    this.props.postMarker(this.state.marker, this.tripID);
+    this.handleModalClose();
+  }
+
+  handleModalClose() {
+    this.setState({
+      modalVisible: false,
+      marker: {
+        title: '',
+        day: '1',
+        longitude: null,
+        latitude: null
+      }
+    });
+  }
+
   handleRegionChange(e) {
-    console.log('inside handle region change');
     this.setState({ region: e });
   }
 
+  handleMarkerTitleInput(e) {
+    this.setState({
+      marker: {
+        title: e.nativeEvent.text,
+        day: this.state.marker.day,
+        longitude: this.state.marker.longitude,
+        latitude: this.state.marker.latitude
+      }
+    });
+  }
+
+  handleMarkerDayInput(day) {
+    this.setState({
+      marker: {
+        title: this.state.marker.title,
+        day,
+        longitude: this.state.marker.longitude,
+        latitude: this.state.marker.latitude
+      }
+    });
+  }
+
   handleMapPress(e) {
-    this.props.postMarker(e.nativeEvent.coordinate, this.tripID);
+    this.setState({ modalVisible: true,
+                    marker: {
+                      title: this.state.marker.title,
+                      day: this.state.marker.day,
+                      longitude: e.nativeEvent.coordinate.longitude,
+                      latitude: e.nativeEvent.coordinate.latitude
+                    }
+                  });
   }
 
   handleDelete(e, markerID) {
