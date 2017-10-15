@@ -103,7 +103,8 @@ class TripMap extends React.Component {
           onLongPress={ (e) => this.handleMapPress(e) }
           style={ { height, width } }
           region={ this.state.region }
-          onRegionChangeComplete = { this.handleRegionChange }>
+          onRegionChangeComplete={ this.handleRegionChange }
+          onRegionChange={ this.handleRegionChange }>
           { this.state.markers.map(marker => (
             <MapView.Marker draggable
               coordinate={ marker.latlng }
