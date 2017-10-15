@@ -35,7 +35,8 @@ class TripMap extends React.Component {
                      day: '1',
                      longitude: null,
                      latitude: null
-                   }
+                   },
+                   days: 0
                  };
     this.handleMapPress = this.handleMapPress.bind(this);
     this.handleRegionChange = this.handleRegionChange.bind(this);
@@ -46,22 +47,44 @@ class TripMap extends React.Component {
   }
 
   componentWillMount() {
+    let days;
     const markersRef= firebase.database()
                                .ref(`/markers/${this.tripID}`);
 
-    markersRef.on('value', snap => {
-      console.log('inside on');
-      if (snap.val()) {
-        console.log('inside if statment on');
-        this.setState({ markers: Object.values(snap.val())});
-      } else {
-        this.setState({ markers: []});
-      }
-    });
+    const tripRef = firebase.database()
+                            .ref(`/trips/${this.tripID}`);
+
+    tripRef.once('value').then( tripSnap => {
+      console.log('tripsnap', tripSnap.val());
+      const { startDate, endDate } = tripSnap.val();
+      days = this.daysDiff(new Date(startDate), new Date(endDate));}).then(
+        () => {
+          markersRef.on('value', snap => {
+            if (snap.val()) {
+              this.setState({ markers: Object.values(snap.val()),
+                              days});
+            } else {
+              this.setState({ markers: []},
+                              days);
+            }
+          });
+        }
+      );
+
+  }
+
+  daysDiff(startDateObj, endDateObj) {
+    const ms = endDateObj.getTime() - startDateObj.getTime();
+    console.log(ms / 1000 / 60 / 60 / 24 + 1);
+    return ms / 1000 / 60 / 60 / 24 + 1;
   }
 
   render() {
-    console.log(this.state.markers);
+    let pickerArray = [];
+    for (var i = 1; i < (this.state.days + 1); i++) {
+      pickerArray.push(<Picker.Item label={ i.toString() } value={ i.toString() } />)
+    }
+
     return (
       <View style={ { marginTop: 22 } }>
 
@@ -171,9 +194,7 @@ class TripMap extends React.Component {
                     itemStyle={ { height: 100, fontSize: 12 } }
                     selectedValue={ this.state.marker.day }
                     onValueChange={ this.handleMarkerDayInput } >
-                    { ['1','2','3','4'].map(e => {
-                      return <Picker.Item label={ e } value={ e } />;
-                    })}
+                    { pickerArray }
                   </Picker>
                 </View>
 
