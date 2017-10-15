@@ -6,7 +6,7 @@ import {
   Button,
   Image,
   Modal,
-  TouchableHighlight,
+  TouchableOpacity,
   TextInput,
   Picker
 } from 'react-native';
@@ -44,6 +44,7 @@ class TripMap extends React.Component {
     this.handleMarkerDayInput = this.handleMarkerDayInput.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
+    this.handleMarkerPress = this.handleMarkerPress.bind(this);
   }
 
   componentWillMount() {
@@ -162,11 +163,12 @@ class TripMap extends React.Component {
               onPress={ this.handleMarkerPress }
               pinColor='#00007f'>
               <MapView.Callout tooltip={ false }>
-                <View>
-                  <Text>{ marker.title }</Text>
-                  <Text>{ marker.day }</Text>
-                  <Button title='Delete?'
-                    onPress={ (e) => this.handleDelete(e, marker.id) }/>
+                <View style={ { flex: 1, justifyContent: 'center', alignItems: 'center', width: 150 } }>
+                  <Text>Notes: { marker.title }</Text>
+                  <Text>Day: { marker.day }</Text>
+                  <TouchableOpacity onPress={ e => this.handleDelete(e, marker.id) }>
+                    <Text style={ { fontSize: 12 } }>Delete?</Text>
+                  </TouchableOpacity>
                 </View>
               </MapView.Callout>
             </MapView.Marker>
@@ -187,11 +189,11 @@ class TripMap extends React.Component {
                   alignItems: 'center',
                   justifyContent: 'center'}
                 } >
-              <View>
-                <View style={ { flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' } }>
-                  <Text style={ { fontSize: 16, paddingRight: 20 } }>Marker Title</Text>
-                  <TextInput style={ { width: 200 } }
-                             placeholder='Title...'
+              <View style={ { flex: 1, justifyContent: 'center', alignItems: 'center' } }>
+                <View style={ { flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingBottom: 20 } }>
+                  <Text style={ { fontSize: 16, paddingRight: 25 } }>Notes</Text>
+                  <TextInput style={ { width: 100 } }
+                             placeholder='(optional)'
                              onChange={ this.handleMarkerTitleInput } />
                 </View>
 
@@ -208,9 +210,9 @@ class TripMap extends React.Component {
                 <Button title='Submit'
                         onPress={ this.handleModalSubmit } />
 
-                <TouchableHighlight onPress={ this.handleModalClose } >
-                  <Text>Close</Text>
-                </TouchableHighlight>
+                <TouchableOpacity onPress={ this.handleModalClose } >
+                  <Text style={ { fontWeight: 'bold', paddingBottom: 20 } }>X</Text>
+                </TouchableOpacity>
               </View>
          </View>
 
@@ -218,6 +220,19 @@ class TripMap extends React.Component {
 
       </View>
     );
+  }
+
+  handleMarkerPress(e) {
+    const { latitude, longitude } = e.nativeEvent.coordinate;
+    const { latitudeDelta, longitudeDelta } = this.state.region;
+    this.setState({
+      region: {
+        latitude,
+        longitude,
+        latitudeDelta,
+        longitudeDelta
+      }
+    });
   }
 
   handleModalSubmit () {
@@ -237,39 +252,41 @@ class TripMap extends React.Component {
     });
   }
 
-  handleRegionChange(e) {
-    this.setState({ region: e });
+  handleRegionChange(coordinates) {
+    this.setState({ region: coordinates });
   }
 
   handleMarkerTitleInput(e) {
-    this.setState({
-      marker: {
-        title: e.nativeEvent.text,
-        day: this.state.marker.day,
-        longitude: this.state.marker.longitude,
-        latitude: this.state.marker.latitude
-      }
-    });
+    const { day, longitude, latitude } = this.state.marker;
+    const title = e.nativeEvent.text;
+    this.setStateForMarker(title, day, latitude, longitude);
   }
 
   handleMarkerDayInput(day) {
+    const { title, longitude, latitude } = this.state.marker;
+    this.setStateForMarker(title, day, latitude, longitude);
+  }
+
+  setStateForMarker(title, day, latitude, longitude) {
     this.setState({
       marker: {
-        title: this.state.marker.title,
+        title,
         day,
-        longitude: this.state.marker.longitude,
-        latitude: this.state.marker.latitude
+        latitude,
+        longitude
       }
     });
   }
 
   handleMapPress(e) {
+    const { title, day } = this.state.marker;
+    const { latitude, longitude } = e.nativeEvent.coordinate;
     this.setState({ modalVisible: true,
                     marker: {
-                      title: this.state.marker.title,
-                      day: this.state.marker.day,
-                      longitude: e.nativeEvent.coordinate.longitude,
-                      latitude: e.nativeEvent.coordinate.latitude
+                      title,
+                      day,
+                      longitude,
+                      latitude
                     }
                   });
   }
@@ -283,10 +300,3 @@ class TripMap extends React.Component {
 }
 
 export default TripMap;
-
-
-// <TripToolbar
-//   type="map"
-//   tripID={this.tripID}
-//   title={this.props.navigation.state.params.title}
-//   navigation={this.props.navigation} />
