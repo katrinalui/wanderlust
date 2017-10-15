@@ -1,5 +1,5 @@
 # Wanderlust
-add imagessssss or logooooo?
+add logooooo?
 [Link to Wanderlust Demo](https://www.google.com)
 
 ## Summary
@@ -19,10 +19,23 @@ Wanderlust allows user to:
 ## Overall Structure
 
 ### Backend
+Wanderlust was built using Firebase in the backend as an application development platform. Firebase was used to have a seamless connection and integration between data, users and authentication. Firebase Realtime Database stores data into as JSON object creating a JSON tree. It incorporates NO-SQL database.
 
 ### Frontend
+The frontend is built with React-Native to compose rich mobile UI components. React Native was used to build cross-platform mobile app using JavaScript and React/Redux.
 
 ### Libraries
+- [firebase](https://www.npmjs.com/package/firebase)
+- [react-native](https://www.npmjs.com/package/react-native)
+- [react-native-datepicker](https://www.npmjs.com/package/react-native-datepicker)
+- [react-native-fbsdk](https://www.npmjs.com/package/react-native-fbsdk)
+- [react-native-google-places-autocomplete](https://www.npmjs.com/package/react-native-google-places-autocomplete)
+- [react-native-maps](https://www.npmjs.com/package/react-native-maps)
+- [react-native-material-ui](https://www.npmjs.com/package/react-native-material-ui)
+- [react-native-swipeout](https://www.npmjs.com/package/react-native-swipeout)
+- [react-native-vector-icons](https://www.npmjs.com/package/react-native-vector-icons)
+- [react-navigation](https://www.npmjs.com/package/react-navigation)
+
 
 ## Primary Components
 
@@ -39,3 +52,5 @@ imageeee....
 
 s
 ### Map
+nosql
+json tree
