@@ -90,7 +90,7 @@ class Dashboard extends React.Component {
     return (
       <View style={ styles.content }>
         <Toolbar
-          style={{ container: { paddingTop: 35, paddingBottom: 20, height: 65 } }}
+          style={ { container: { paddingTop: 35, paddingBottom: 20, height: 65 } } }
           leftElement="menu"
           onLeftElementPress={() => this.props.navigation.navigate('DrawerOpen')}
           centerElement={`Welcome, ${ this.props.currentUser.name }!`}
@@ -98,7 +98,8 @@ class Dashboard extends React.Component {
         <View style={ styles.header }>
           <StatusBar barStyle="light-content" />
         </View>
-        <FlatList data={ this.props.trips }
+        <FlatList bounces={ false }
+                  data={ this.props.trips }
                   keyExtractor={item => Object.keys(item)[0]}
                   renderItem={ ({ item }) =>
                     <DashboardItem
@@ -111,19 +112,20 @@ class Dashboard extends React.Component {
            visible={this.state.modalVisible}>
            <View style={ styles.modalContainer }>
              <View style={ styles.innerModalContainer }>
-               <Text style={{fontSize: 22, fontWeight: '500'}}>Join A Trip!</Text>
+               <Text style={ { fontSize: 22, fontWeight: '500' } }>Join A Trip!</Text>
                  <TextInput
                    style={{width: 200}}
-                   placeholder="Add Code"
+                   placeholder="Enter Code"
                    onChangeText={ this.handleChange }/>
                 <TouchableHighlight onPress={this.handlePress}>
-                   <Text style={{color: 'green'}
-                          }>Join!</Text>
+                   <Text style={ { color: 'green' } }>
+                     Join
+                   </Text>
                  </TouchableHighlight>
                  <TouchableHighlight onPress={() => {
                      this.setModalVisible(!this.state.modalVisible);
                    }}>
-                   <Text style={{color: 'red'}}>Cancel</Text>
+                   <Text style={ { color: 'red' } }>Cancel</Text>
                  </TouchableHighlight>
                  <Text>
                    { this.state.error }
@@ -131,10 +133,9 @@ class Dashboard extends React.Component {
              </View>
            </View>
          </Modal>
-        <LoginButton />
         <TouchableHighlight
-          onPress={() => {this.setModalVisible(true); }}>
-          <Text>Add trip code</Text>
+          onPress={ () => {this.setModalVisible(true); }}>
+          <Text style={ { color: 'white', fontSize: 20, paddingTop: 15 } }>Join Trip</Text>
         </TouchableHighlight>
         <ActionButton onPress={ this.redirectToTripForm } />
       </View>
@@ -146,7 +147,7 @@ export default Dashboard;
 
 const styles = StyleSheet.create({
   content: {
-    paddingBottom: 30,
+    paddingBottom: 15,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -168,8 +169,12 @@ const styles = StyleSheet.create({
   innerModalContainer: {
     width: 300,
     height: 150,
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
     borderRadius: 20
   }
 });
+
+// <LoginButton />
