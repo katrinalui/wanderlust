@@ -1,7 +1,10 @@
 import React from 'react';
 import {
   View,
-  Button, Text
+  Button,
+  Text,
+  StyleSheet,
+  StatusBar
 } from 'react-native';
 
 import {
@@ -29,7 +32,8 @@ class FacebookLogin extends React.Component {
       return {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: '#1f2b4b'
       };
     }
   }
@@ -39,6 +43,8 @@ class FacebookLogin extends React.Component {
 
     return (
       <View style={style}>
+        <StatusBar barStyle="light-content" />
+        <Text style={styles.text}>Sign In</Text>
         <LoginButton
           readPermissions={["public_profile", "email"]}
           onLoginFinished={
@@ -95,3 +101,13 @@ class FacebookLogin extends React.Component {
 }
 
 export default FacebookLogin;
+
+const styles = StyleSheet.create({
+  text: {
+    fontWeight: '500',
+    alignSelf: 'center',
+    color: 'white',
+    fontSize: 22,
+    height: 70
+  },
+});
