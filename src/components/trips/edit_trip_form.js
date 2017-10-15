@@ -38,7 +38,6 @@ class EditTripForm extends React.Component {
     if (!this.state.endDate) errors.push('When is the end date?');
     this.setState({ errors }, () => {
       if (this.state.errors.length === 0) {
-        console.log(this.state.errors.length);
         this.updateInFirebase();
       }
     });
@@ -49,7 +48,8 @@ class EditTripForm extends React.Component {
     this.setState({ title: this.state.title,
       startDate: this.state.startDate,
       endDate: this.state.endDate }, () =>
-      this.props.editTrip(this.state));
+      this.props.editTrip(this.state)
+                .then(() => this.props.navigation.goBack()));
   }
 
   render() {
