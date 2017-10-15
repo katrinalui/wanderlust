@@ -4,7 +4,8 @@ import {
   Button,
   Text,
   StyleSheet,
-  StatusBar
+  StatusBar,
+  Image
 } from 'react-native';
 
 import {
@@ -44,7 +45,10 @@ class FacebookLogin extends React.Component {
     return (
       <View style={style}>
         <StatusBar barStyle="light-content" />
-        <Text style={styles.text}>Sign In</Text>
+        <Image
+          source={require('../../../assets/images/logo_with_name.png')}
+          resizeMode="contain"
+          style={{width: 300, height: 400}} />
         <LoginButton
           readPermissions={["public_profile", "email"]}
           onLoginFinished={
