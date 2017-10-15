@@ -45,7 +45,10 @@ class DashboardItem extends React.Component {
 
     return (
       <Swipeout right={swipeoutBtns}>
-        <View>
+        <View style={{
+          borderBottomColor: 'black',
+          borderBottomWidth: 2
+        }}>
           <Text style={ style }
                 onPress={this.handlePress}>
             {this.props.title}
