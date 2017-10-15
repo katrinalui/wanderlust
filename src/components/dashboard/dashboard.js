@@ -106,7 +106,6 @@ class Dashboard extends React.Component {
                                    id={ Object.keys(item)[0] }
                                    title={ Object.values(item)[0] }
                                    navigation={ this.props.navigation }
-                                   currentUserID={ this.props.currentUser.id }
                                    /> }/>
          <Modal
            animationType="slide"
