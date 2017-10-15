@@ -5,7 +5,8 @@ import {
   FlatList,
   StyleSheet,
   Share,
-  TouchableHighlight
+  TouchableHighlight,
+  StatusBar
 } from 'react-native';
 import {
   LoginButton,
@@ -49,9 +50,12 @@ class Dashboard extends React.Component {
 
     return (
       <View style={ styles.content }>
-        <Text style={ styles.h1 }>
-           Welcome, { this.props.currentUser.name }!
-        </Text>
+        <View style={ styles.header }>
+          <StatusBar barStyle="light-content" />
+          <Text style={ styles.h1 }>
+             Welcome, { this.props.currentUser.name }!
+          </Text>
+        </View>
 
         <FlatList data={ this.props.trips }
                   keyExtractor={item => Object.keys(item)[0]}
@@ -79,19 +83,23 @@ const styles = StyleSheet.create({
   content: {
     paddingTop: 30,
     paddingBottom: 30,
-    backgroundColor: 'white',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#1f2b4b'
   },
   h1: {
-    fontWeight: '700',
+    fontWeight: '500',
     alignSelf: 'center',
-    color: '#431833',
-    fontSize: 24
+    color: 'white',
+    fontSize: 22,
+    height: 70
+  },
+  header: {
+
   },
   button: {
-    backgroundColor: '#76c9f8',
+    backgroundColor: 'white',
     padding: 10,
     margin: 10,
     borderRadius: 5
