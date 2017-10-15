@@ -4,7 +4,8 @@ import {
   Text,
   FlatList,
   StyleSheet,
-  Share
+  Share,
+  TouchableHighlight
 } from 'react-native';
 import {
   LoginButton,
@@ -62,7 +63,7 @@ class Dashboard extends React.Component {
 
         <LoginButton />
         <ActionButton onPress={ this.redirectToTripForm } />
-        <TouchableHighlight onPress={this._shareTextWithTitle}>
+        <TouchableHighlight onPress={this._shareTextMessage}>
           <View style={styles.button}>
             <Text>Click to share a Trip</Text>
           </View>
