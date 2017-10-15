@@ -3,8 +3,7 @@ import {
   View,
   Text,
   Dimensions,
-  Button,
-  Image
+  Button
 } from 'react-native';
 
 import MapView from 'react-native-maps';
@@ -102,7 +101,8 @@ class TripMap extends React.Component {
         <MapView
           onLongPress={ (e) => this.handleMapPress(e) }
           style={ { height, width } }
-          region={ this.state.region } >
+          region={ this.state.region }
+          onRegionChange = { (e) => this.handleRegionChange(e) }>
           { this.state.markers.map(marker => (
             <MapView.Marker draggable
               coordinate={ marker.latlng }
@@ -123,6 +123,10 @@ class TripMap extends React.Component {
         </MapView>
       </View>
     );
+  }
+
+  handleRegionChange(e) {
+    this.setState({ region: e });
   }
 
   handleMapPress(e) {
