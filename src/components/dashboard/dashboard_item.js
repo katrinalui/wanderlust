@@ -1,6 +1,6 @@
 import React from 'react';
 import Swipeout from 'react-native-swipeout';
-import { Dimensions, View, Text, Button } from 'react-native';
+import { Dimensions, View, Text, Share, Button } from 'react-native';
 import { deleteTrip } from '../../util/trip_api_util';
 
 const { width } = Dimensions.get('window');
@@ -16,6 +16,7 @@ class DashboardItem extends React.Component {
     this.handleDeleteButton = this.handleDeleteButton.bind(this);
     this.handleEditButton = this.handleEditButton.bind(this);
     this.handlePress = this.handlePress.bind(this);
+    this._shareTextMessage = this._shareTextMessage.bind(this);
   }
 
   handleEditButton() {
@@ -30,8 +31,26 @@ class DashboardItem extends React.Component {
     this.props.navigation.navigate('Chat', { id: this.props.id });
   }
 
+  _shareTextMessage () {
+    Share.share({
+      message: `Join my trip plans at Wanderlust. Copy and paste the following code: ${this.props.id}`,
+      url: 'http://google.com'
+    })
+    .then(this._showResult)
+    .catch(err => console.log(err));
+  }
+
+  _showResult (result) {
+     console.log(result);
+   }
+
   render() {
     const swipeoutBtns = [
+      {
+        text: 'Share',
+        backgroundColor: '#00A9A5',
+        onPress: this._shareTextMessage
+      },
       {
         text: 'Edit',
         backgroundColor: 'orange',
@@ -47,7 +66,7 @@ class DashboardItem extends React.Component {
       <Swipeout right={swipeoutBtns}>
         <View style={{
           borderBottomColor: 'black',
-          borderBottomWidth: 2
+          borderBottomWidth: 1
         }}>
           <Text style={ style }
                 onPress={this.handlePress}>

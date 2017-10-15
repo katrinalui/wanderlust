@@ -49,46 +49,52 @@ class TripMap extends React.Component {
   componentWillMount() {
     let days;
     const markersRef= firebase.database()
-                               .ref(`/markers/${this.tripID}`);
+                              .ref(`/markers/${this.tripID}`);
 
     const tripRef = firebase.database()
                             .ref(`/trips/${this.tripID}`);
 
-    tripRef.once('value').then( tripSnap => {
-      console.log('tripsnap', tripSnap.val());
-      const { startDate, endDate } = tripSnap.val();
-      days = this.daysDiff(new Date(startDate), new Date(endDate));}).then(
-        () => {
-          markersRef.on('value', snap => {
-            if (snap.val()) {
-              this.setState({ markers: Object.values(snap.val()),
-                              days});
-            } else {
-              this.setState({ markers: []},
-                              days);
+    tripRef.once('value', tripSnap => {
+
+             const { startDate, endDate } = tripSnap.val();
+             days = this.daysDiff(new Date(startDate), new Date(endDate));
+             return tripSnap;
+           })
+           .then(res => {
+             markersRef.on('value', markerSnap => {
+               console.log('markerSnap', markerSnap.val());
+               if (markerSnap.val()) {
+                 this.setState({ markers: Object.values(markerSnap.val()),
+                                days});
+               } else {
+                this.setState({ markers: [],
+                                days});
             }
           });
         }
       );
-
   }
 
   daysDiff(startDateObj, endDateObj) {
     const ms = endDateObj.getTime() - startDateObj.getTime();
-    console.log(ms / 1000 / 60 / 60 / 24 + 1);
     return ms / 1000 / 60 / 60 / 24 + 1;
   }
 
   render() {
     let pickerArray = [];
     for (var i = 1; i < (this.state.days + 1); i++) {
-      pickerArray.push(<Picker.Item label={ i.toString() } value={ i.toString() } />)
+      pickerArray.push(<Picker.Item label={ i.toString() } value={ i.toString() } />);
     }
 
     return (
-      <View style={ { marginTop: 22 } }>
+      <View>
+        <TripToolbar
+          type="map"
+          tripID={this.tripID}
+          title={this.props.navigation.state.params.title}
+          navigation={this.props.navigation} />
 
-        <GooglePlacesAutocomplete placeholder='Search'
+        <GooglePlacesAutocomplete placeholder='Search...'
                                   minLength={ 2 }
                                   autoFocus={ false }
                                   returnKeyType={ 'search' }
@@ -104,7 +110,7 @@ class TripMap extends React.Component {
                                   }}
 
                                   onPress={(data, details = null) => {
-                                    const { lat, lng } = details.geometry.location
+                                    const { lat, lng } = details.geometry.location;
                                     this.setState({
                                       region: {
                                         latitude: lat,
@@ -112,7 +118,7 @@ class TripMap extends React.Component {
                                         latitudeDelta: this.state.region.latitudeDelta,
                                         longitudeDelta: this.state.region.longitudeDelta
                                       }
-                                    })
+                                    });
                                   }}
 
                                   renderDescription={(row) => {
@@ -121,12 +127,12 @@ class TripMap extends React.Component {
 
                                   styles={{
                                     container: {
-                                      zIndex: 100,
-                                      paddingTop: 25
+                                      zIndex: 100
                                     },
                                     textInputContainer: {
                                       position: 'relative',
-                                      width: '100%'
+                                      width: '100%',
+                                      backgroundColor: '#1f2b4b'
                                     },
                                     description: {
                                       fontWeight: 'bold'
@@ -136,12 +142,13 @@ class TripMap extends React.Component {
                                     },
                                     listView: {
                                       position: 'absolute',
-                                      top: 69,
+                                      top: 43,
                                       backgroundColor: 'white'
                                     }
                                   }}
                                   nearbyPlacesAPI='GooglePlacesSearch'
-                                  debounce={ 1000 } />
+                                  debounce={ 1000 }
+                                  />
 
         <MapView
           onLongPress={ this.handleMapPress }
@@ -268,8 +275,9 @@ class TripMap extends React.Component {
   }
 
   handleDelete(e, markerID) {
-    const markerRef = firebase.database().ref(`/markers/${this.tripID}/${markerID}`);
-    markerRef.remove();
+    const markerRef = firebase.database()
+                              .ref(`/markers/${this.tripID}/${markerID}`)
+                              .remove();
   }
 
 }

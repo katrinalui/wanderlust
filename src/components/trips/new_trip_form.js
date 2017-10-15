@@ -3,7 +3,10 @@ import { TextInput,
          View,
          Text,
          Button,
-         FlatList } from 'react-native';
+         FlatList,
+         Share,
+         Modal,
+         StyleSheet } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import * as firebase from 'firebase';
 
@@ -14,19 +17,33 @@ class NewTripForm extends React.Component {
       title: '',
       startDate: '',
       endDate: '',
-      errors: []
+      errors: [],
+      modalVisible: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.redirectToDashboard = this.redirectToDashboard.bind(this);
     this.postToFirebase = this.postToFirebase.bind(this);
+    this._setModalVisible = this._setModalVisible.bind(this);
   }
+
+  _shareTextMessage () {
+    Share.share({
+      message: `Join my trip plans at Wanderlust. Copy and paste the following code: ${this.tripID}`,
+      url: 'http://google.com'
+    })
+    .then(this._showResult)
+    .catch(err => console.log(err));
+  }
+
+  _showResult (result) {
+     console.log(result);
+   }
+
+   _setModalVisible(visible) {
+     this.setState({modalVisible: visible});
+   }
 
   handleChange(value, inputType) {
     this.setState({ [inputType]: value });
-  }
-
-  redirectToDashboard() {
-    this.props.navigation.navigate('Dashboard');
   }
 
   handleSubmit() {
@@ -53,15 +70,23 @@ class NewTripForm extends React.Component {
       startDate: this.state.startDate,
       endDate: this.state.endDate }, () =>
         this.props.createTrip(this.state, userID)
-                  .then(res => this.props.navigation.navigate("Chat", { id: res.trip.id })));
+                  .then(res => {
+                    this.tripID = res.trip.id;
+                    this.setState({ modalVisible: true });
+                }));
+  }
+
+  redirectToTrip() {
+    this.setState({ modalVisible: false });
+    this.props.navigation.navigate("Chat", { id: this.tripID });
   }
 
   render() {
     const errors = this.state.errors.map((el, i) => { return { [i]: el }; });
 
     return (
-      <View>
-        <Text>Create My Trip</Text>
+      <View style={ styles.container }>
+        <Text>Create a Trip</Text>
 
         <Text>Title</Text>
           <TextInput placeholder="Add Title"
@@ -96,11 +121,42 @@ class NewTripForm extends React.Component {
                   keyExtractor={item => Object.keys(item)[0]}
                   renderItem={ ({ item }) => <Text>{ Object.values(item)[0] }</Text>} />
 
-        <Button title='Dashboard'
-                onPress={ this.redirectToDashboard } />
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.state.modalVisible}>
+          <View style={ styles.modalContainer }>
+            <View style={ styles.innerModalContainer }>
+              <Text>Your trip has been created!</Text>
+              <Button
+                onPress={this._shareTextMessage.bind(this)}
+                title="Invite your friends" />
+
+              <Button
+                onPress={this.redirectToTrip.bind(this)}
+                title="Continue" />
+            </View>
+          </View>
+        </Modal>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 25
+  },
+  modalContainer: {
+    padding: 25,
+    flex: 1,
+    justifyContent: 'center'
+  },
+  innerModalContainer: {
+    width: 200,
+    height: 150,
+    alignItems: 'center'
+  }
+});
 
 export default NewTripForm;
