@@ -1,13 +1,15 @@
 import * as firebase from 'firebase';
 
-export const postMarker = (coordinate, tripID) => {
+export const postMarker = (marker, tripID) => {
   const markerRef = firebase.database().ref(`/markers/${tripID}`).push();
   const key = markerRef.key;
   const newMarker = {
     id: key,
+    title: marker.title,
+    day: marker.day,
     latlng: {
-      latitude: coordinate.latitude,
-      longitude: coordinate.longitude
+      latitude: marker.latitude,
+      longitude: marker.longitude
     }
   };
 
