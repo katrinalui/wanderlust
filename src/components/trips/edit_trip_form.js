@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, Button, FlatList } from 'react-native';
+import { View, Text, TextInput, Button, FlatList, Share } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import * as firebase from 'firebase';
 
@@ -12,16 +12,30 @@ class EditTripForm extends React.Component {
       endDate: '',
       errors: []
     };
+    this.tripID = props.navigation.state.params.id;
     this.redirectToDashboard = this.redirectToDashboard.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this._shareTextMessage = this._shareTextMessage.bind(this);
   }
+
+  _shareTextMessage () {
+    Share.share({
+      message: `Join my trip plans at Wanderlust. Copy and paste the following code: ${this.tripID}`,
+      url: 'http://google.com'
+    })
+    .then(this._showResult)
+    .catch(err => console.log(err));
+  }
+
+  _showResult (result) {
+     console.log(result);
+   }
 
   componentDidMount() {
     const editedTripRef = firebase.database()
-                                  .ref(`/trips/${this.props.navigation.state.params.id}`)
+                                  .ref(`/trips/${this.tripID}`)
                                   .once('value', snap => this.setState(snap.val()));
   }
-
 
   handleChange(value, inputType) {
     this.setState({ [inputType]: value });
@@ -49,7 +63,7 @@ class EditTripForm extends React.Component {
       startDate: this.state.startDate,
       endDate: this.state.endDate }, () =>
       this.props.editTrip(this.state)
-                .then(() => this.props.navigation.goBack()));
+                .then(() => this.props.navigation.navigate("Dashboard")));
   }
 
   render() {
@@ -88,15 +102,15 @@ class EditTripForm extends React.Component {
           minDate={ this.state.startDate || new Date }
           />
 
+        <Button title='Invite friends to your trip'
+                onPress={this._shareTextMessage}/>
+
         <Button title='Edit'
           onPress={ this.handleSubmit }/>
 
         <FlatList data={ errors }
                   keyExtractor={item => Object.keys(item)[0]}
                   renderItem={ ({ item }) => <Text>{ Object.values(item)[0] }</Text>} />
-
-        <Button title='Dashboard'
-          onPress={ this.redirectToDashboard }/>
 
       </View>
     );
