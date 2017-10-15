@@ -11,7 +11,6 @@ Wanderlust allows user to:
   - with an option to share, edit or delete a trip
 - Join a trip with a unique code
 - Create a trip
-  - with title, start and end date
 - Send instant messages in chatroom for each trip they are a part of
 - Add markers locations to trip's map
   - specifying marker's title and day
@@ -19,7 +18,7 @@ Wanderlust allows user to:
 ## Overall Structure
 
 ### Backend
-Wanderlust was built using Firebase in the backend as an application development platform. Firebase was used to have a seamless connection and integration between data, users and authentication. Firebase Realtime Database stores data into as JSON object creating a JSON tree. It incorporates NO-SQL database.
+Wanderlust was built using Firebase in the backend as an application development platform. Firebase was used to have a seamless connection and integration between data, users and authentication. Firebase Realtime Database stored data into as JSON object creating a JSON tree. It incorporates NO-SQL database.
 
 ### Frontend
 The frontend is built with React-Native to compose rich mobile UI components. React Native was used to build cross-platform mobile app using JavaScript and React/Redux.
@@ -46,11 +45,28 @@ Data returned includes user's name, email and profile picture.
 imageeee....
 
 ### Dashboard
+The dashboard allows users to view all participated trips.
 
+Using the swipe feature on a trip, user has an option to:
+- Share a trip to a friend with a unique code
+- Edit a trip (renders edit trip form)
+- Delete a trip from dashboard
+
+Users can create a new trip by pressing the add button (render new trip form)
+- Allows users to create title and dates of trips
+
+User can join a trip by clicking on Join Trip and submitting a unique code.
+
+imageeee.....
 
 ### Chat
+Each trip has a dedicated chatroom that allows participate to discuss traveling plans.
 
-s
+Top navigation bar allows users to go back to their dashboard or the current trip's map
+
+imageeeee.....
+
 ### Map
-nosql
-json tree
+User can search point of interest and create a marker
+
+Each marker allows users to add a note and select the day of the visit or delete a marker. 
