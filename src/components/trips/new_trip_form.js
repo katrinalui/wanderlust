@@ -90,18 +90,11 @@ class NewTripForm extends React.Component {
       <View style={ styles.container }>
         <Text>Create a Trip</Text>
 
-        <Text>Title</Text>
-        <TextInput placeholder="Add Title"
-                   onChangeText={text => this.handleChange(text, 'title')}/>
-
         <FloatLabelTextField
           placeholder="Title"
-          value=""
-          defaultValue=""
-          maxLength={100}
+          value={this.state.title}
+          maxLength={50}
           onChangeTextValue={text => this.handleChange(text, 'title')}
-          onFocus={() => console.log("in focus")}
-          onBlur={() => console.log("blurr")}
         />
 
         <Text>Start Date</Text>
@@ -174,6 +167,12 @@ const styles = StyleSheet.create({
     height: 150,
     alignItems: 'center'
   },
+  inputContainer: {
+    flex: 1,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   viewContainer: {
     flex: 1,
     flexDirection: 'row'
@@ -201,7 +200,7 @@ const styles = StyleSheet.create({
     borderColor: '#C8C7CC',
   },
   valueText: {
-    height: (Platform.OS === 'ios' ? 20 : 60),
+    height: 20,
     fontSize: 16,
     color: '#111111'
   },
@@ -308,7 +307,7 @@ class FloatLabelTextField extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.inputContainer}>
         <View style={styles.viewContainer}>
           <View style={[styles.paddingView, this.leftPadding()]} />
           <View style={[styles.fieldContainer, this.withBorder()]}>
