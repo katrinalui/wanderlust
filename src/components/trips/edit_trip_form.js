@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, TextInput, Button, FlatList, Share } from 'react-native';
+import { View, Text, TextInput, Button, FlatList, Share, StyleSheet } from 'react-native';
 import DatePicker from 'react-native-datepicker';
+import FloatLabelTextField from '../form/float_label_text_field';
 import * as firebase from 'firebase';
 
 class EditTripForm extends React.Component {
@@ -70,13 +71,16 @@ class EditTripForm extends React.Component {
     const errors = this.state.errors.map((el, i) => { return { [i]: el }; });
 
     return (
-      <View>
+      <View style={styles.container}>
         <Text>Edit My Trip</Text>
 
-        <Text>Title</Text>
-        <TextInput value={ this.state.title }
-                   placeholder="Add Title"
-                   onChangeText={text => this.handleChange(text, 'title')}/>
+        <FloatLabelTextField
+          placeholder="Title"
+          value={this.state.title}
+          maxLength={50}
+          onChangeTextValue={text => this.handleChange(text, 'title')}
+        />
+
         <Text>Start Date</Text>
 
         <DatePicker
@@ -116,5 +120,25 @@ class EditTripForm extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 25,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  modalContainer: {
+    padding: 25,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  innerModalContainer: {
+    width: 200,
+    height: 150,
+    alignItems: 'center'
+  }
+});
 
 export default EditTripForm;
