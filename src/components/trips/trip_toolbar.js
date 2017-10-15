@@ -16,8 +16,7 @@ const TripToolbar = props => {
 
   return (
     <Toolbar
-      style={{ container: { paddingTop: 25, paddingBottom: 15 } }}
-      isSearchActive={false}
+      style={{ container: { paddingTop: 35, paddingBottom: 20, height: 65 } }}
       leftElement="menu"
       centerElement={title}
       rightElement={icon}

@@ -3,7 +3,8 @@ import {
   View,
   Text,
   Dimensions,
-  Button
+  Button,
+  Image
 } from 'react-native';
 
 import MapView from 'react-native-maps';
