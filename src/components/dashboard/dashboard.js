@@ -3,7 +3,8 @@ import {
   View,
   Text,
   FlatList,
-  StyleSheet
+  StyleSheet,
+  Share
 } from 'react-native';
 import {
   LoginButton,
@@ -22,6 +23,19 @@ class Dashboard extends React.Component {
   redirectToTripForm() {
     this.props.navigation.navigate('NewTripForm');
   }
+
+  _shareTextMessage () {
+    Share.share({
+      message: 'Join my trip plans at Wanderlust',
+      url: 'http://google.com'
+    })
+    .then(this._showResult)
+    .catch(err => console.log(err));
+  }
+
+  _showResult (result) {
+     console.log(result);
+   }
 
   render() {
     if (!this.props.currentUser) {
@@ -48,6 +62,11 @@ class Dashboard extends React.Component {
 
         <LoginButton />
         <ActionButton onPress={ this.redirectToTripForm } />
+        <TouchableHighlight onPress={this._shareTextWithTitle}>
+          <View style={styles.button}>
+            <Text>Click to share a Trip</Text>
+          </View>
+        </TouchableHighlight>
       </View>
     );
   }
@@ -69,5 +88,11 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     color: '#431833',
     fontSize: 24
+  },
+  button: {
+    backgroundColor: '#76c9f8',
+    padding: 10,
+    margin: 10,
+    borderRadius: 5
   }
 });
