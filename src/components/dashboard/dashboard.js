@@ -120,12 +120,16 @@ class Dashboard extends React.Component {
                  placeholder="Enter code"
                  onChangeText={ this.handleChange }/>
                <TouchableHighlight onPress={ this.handlePress }>
-                 <Text style={ {color: 'green', paddingBottom: 10 } }>Join</Text>
+                 <Text style={ {color: 'green', paddingBottom: 10 } }>
+                   Join
+                 </Text>
                </TouchableHighlight>
                <TouchableHighlight onPress={() => {
                    this.setModalVisible(!this.state.modalVisible);
                  }}>
-                 <Text style={ { color: 'red', paddingBottom: 10 } }>Cancel</Text>
+                 <Text style={ { color: 'red', paddingBottom: 10 } }>
+                   Cancel
+                 </Text>
                </TouchableHighlight>
                <Text>
                  { this.state.error }
@@ -135,7 +139,9 @@ class Dashboard extends React.Component {
          </Modal>
         <TouchableHighlight
           onPress={() => { this.setModalVisible(true); } }>
-          <Text style={ { color: 'white', fontSize: 20, paddingTop: 15 } }>Join Trip</Text>
+          <Text style={ { color: 'white', fontSize: 20, paddingTop: 15 } }>
+            Join Trip
+          </Text>
         </TouchableHighlight>
         <ActionButton onPress={ this.redirectToTripForm } />
       </View>
