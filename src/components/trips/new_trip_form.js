@@ -31,22 +31,20 @@ class NewTripForm extends React.Component {
 
   handleSubmit() {
     let errors = [];
-    if (!this.state.title) errors.push('You need a title!');
-    if (!this.state.startDate) errors.push('When is the start date?');
-    if (!this.state.endDate) errors.push('When is the end date?');
+    if (!this.state.title) errors.push('Title cannot be blank.');
+    if (!this.state.startDate) errors.push('Start date cannot be blank.');
+    if (!this.state.endDate) errors.push('End date cannot be blank.');
 
     if (this.state.endDate && this.state.startDate) {
       if (new Date(this.state.endDate) - new Date(this.state.startDate) < 0) {
-        errors.push('Start date must be after end date');
+        errors.push('Start date cannot be after end date.');
       }
     }
     this.setState({ errors }, () => {
       if (this.state.errors.length === 0) {
-        console.log(this.state.errors.length);
         this.postToFirebase();
       }
     });
-
   }
 
   postToFirebase() {
@@ -54,7 +52,8 @@ class NewTripForm extends React.Component {
     this.setState({ title: this.state.title,
       startDate: this.state.startDate,
       endDate: this.state.endDate }, () =>
-      this.props.createTrip(this.state, userID));
+        this.props.createTrip(this.state, userID)
+                  .then(res => this.props.navigation.navigate("Chat", { id: res.trip.id })));
   }
 
   render() {
