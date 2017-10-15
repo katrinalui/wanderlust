@@ -1,117 +1,72 @@
 # Wanderlust
-**Wanderlust is a collaborative mobile app that allows users to plan out an itinerary realtime utilizing a chat room and a Google map.**
+add logooooo?
+[Link to Wanderlust Demo](https://www.google.com)
 
-## Background/Overview
-It is sometimes difficult to plan out trips with people when they are located elsewhere. Unlike existing travel planning apps, Wanderlust aims to make it easier to plan trips with friends and family by creating a live chat room with a Google map that updates when users place markers.
+## Summary
+[Wanderlust](https://www.google.com) is a collaborative mobile app that allows users to plan an itinerary in realtime by utilizing a chatroom and a Google map.
 
-## Functionality & MVP
-This app, at a minimum, will satisfy the following MVPs:
-- [ ] Users can sign up and sign in using authentication
-- [ ] Users can see all of their trips on dashboard view
-- [ ] CRUD functionality for trips and entities (chatrooms, markers, etc.)
-- [ ] Users can instant message each other in a chatroom
-- [ ] Production README
-- [ ] Demo website for the mobile app
+Wanderlust allows user to:
+- Login/Logout (using Facebook)
+- View all user trips
+  - with an option to share, edit or delete a trip
+- Join a trip with a unique code
+- Create a trip
+- Send instant messages in chatroom for each trip they are a part of
+- Add markers locations to trip's map
+  - specifying marker's title and day
 
-### Bonus
-- [ ] Dropdown navigation
-- [ ] Users can view travel time between markers
-- [ ] App hosted on iOS/Android app stores
+## Overall Structure
 
-## Design Documents
-### Wireframes
-Login Page
+### Backend
+Wanderlust was built using Firebase in the backend as an application development platform. Firebase was used to have a seamless connection and integration between data, users and authentication. Firebase Realtime Database stored data into as JSON object creating a JSON tree. It incorporates NO-SQL database.
 
-![](docs/login_page.png)
+### Frontend
+The frontend is built with React-Native to compose rich mobile UI components. React Native was used to build cross-platform mobile app using JavaScript and React/Redux.
 
-Dashboard
+### Libraries
+- [firebase](https://www.npmjs.com/package/firebase)
+- [react-native](https://www.npmjs.com/package/react-native)
+- [react-native-datepicker](https://www.npmjs.com/package/react-native-datepicker)
+- [react-native-fbsdk](https://www.npmjs.com/package/react-native-fbsdk)
+- [react-native-google-places-autocomplete](https://www.npmjs.com/package/react-native-google-places-autocomplete)
+- [react-native-maps](https://www.npmjs.com/package/react-native-maps)
+- [react-native-material-ui](https://www.npmjs.com/package/react-native-material-ui)
+- [react-native-swipeout](https://www.npmjs.com/package/react-native-swipeout)
+- [react-native-vector-icons](https://www.npmjs.com/package/react-native-vector-icons)
+- [react-navigation](https://www.npmjs.com/package/react-navigation)
 
-![](docs/dashboard.png)
 
-Create/Edit Trip Form
+## Primary Components
 
-![](docs/crud_trips.png)
+### OAuth with Facebook
+Wanderlust uses Facebook OAuth to allow users to sign in using their Facebook credentials.
+Data returned includes user's name, email and profile picture.
 
-Map + Chat
+imageeee....
 
-![](docs/map_chat.png)
+### Dashboard
+The dashboard allows users to view all participated trips.
 
-Search
+Using the swipe feature on a trip, user has an option to:
+- Share a trip to a friend with a unique code
+- Edit a trip (renders edit trip form)
+- Delete a trip from dashboard
 
-![](docs/search.png)
+Users can create a new trip by pressing the add button (render new trip form)
+- Allows users to create title and dates of trips
 
-Hamburger Menu
+User can join a trip by clicking on Join Trip and submitting a unique code.
 
-![](docs/hamburger_menu.png)
+imageeee.....
 
-Day Picker
+### Chat
+Each trip has a dedicated chatroom that allows participate to discuss traveling plans.
 
-![](docs/day_picker.png)
+Top navigation bar allows users to go back to their dashboard or the current trip's map
 
-## Technologies & Technical Challenges
-This mobile app will be created using Google Firebase, React Native, and Redux which will allow for rapid prototyping.
-- Google Firebase will allow us to utilize different OAuths such as Facebook and Google authorization.
-- Google Firebase will also allow to render a map and a chatroom.
+imageeeee.....
 
-The technical challenges for this application are:
-- Learning a whole new framework (Firebase)
-- Connecting Firebase with React Native/Redux and managing uni- and bi- directional flow of data.
-- Creating an intuitive and bug-free UI for the users.
+### Map
+User can search point of interest and create a marker
 
-### React Native
-[React Native](https://facebook.github.io/react-native/)
-- React Native allows us to build cross-platform mobile apps using JavaScript and React/Redux.
-
-### Firebase
-[Firebase](https://firebase.google.com/)
-- Firebase is a mobile and web application platform that provides the architecture for cloud messaging, authorization, and realtime database.
-
-### Google Map/Places API
-[Google Map/Places API](https://developers.google.com/maps/)
-- Google Map API provides for realtime information for mapping and places.
-
-## Things Accomplished Over the Weekend
-- Researched and downloaded React Native and Firebase
-- Completed tutorials
-- Created skeleton for Collab-Map
-
-## Group Members and Work Breakdown
-Carmen To, Katrina Lui, Chris Kim
-
-### D1
-- Create user authorization (Carmen)
-  - Using OAuth
-- Session login (Katrina)
-  - Create logo
-- Design splash page (Chris)
-  - Display/Functionality: buttons to login
-
-### D2
-- Create and design dashboard (Katrina)
-  - Display/Functionality: buttons to view and create trips
-- Create Chatroom (Chris/Carmen)
-  - Display/Functionality: instant messaging within text box and view chat logs
-
-### D3
-- Create Chatroom (Chris/Carmen) ***continued..***
-  - Display/Functionality: instant messaging within text box and view chat logs
-- Google map/place API (All)
-
-### D4
-- Google map/place API (All) ***continued..***
-- Create navigation
-  - Display/Functionality: logout, view individual day plans, return to dashboard
-
-### D5
-- CRUD map (All)
-
-### D6
-- CRUD trips (All)
-- Styling (All)
-
-### D7
-- Demo page (Katrina)
-- Refactor and polish UX (Chris, Carmen)
-
-## Plan for getting users and reviews
-- Promote through social media and word of mouth
+Each marker allows users to add a note and select the day of the visit or delete a marker. 
