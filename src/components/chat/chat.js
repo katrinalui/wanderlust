@@ -62,7 +62,9 @@ class Chat extends React.Component {
 
   render() {
     return (
-      <KeyboardAvoidingView behavior="padding" style={styles.container}>
+      <KeyboardAvoidingView
+        behavior="padding"
+        style={styles.container}>
           <TripToolbar
             type="chat"
             tripID={this.tripID}
@@ -83,7 +85,6 @@ class Chat extends React.Component {
             style={styles.input}
             value={this.state.body}
             multiline={true}
-            onFocus={this.scrollToEnd}
             onChange={this.scrollToEnd}
             onChangeText={(text) => this.handleChange(text)}/>
           <Button title='Submit'
@@ -110,10 +111,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: window.width - 30,
     marginHorizontal: 10,
-    marginTop: 10
+    paddingTop: 10
   },
   input: {
-    height: 50,
+    height: 45,
     borderRadius: 2,
     fontSize: 18,
     backgroundColor: '#fff',
