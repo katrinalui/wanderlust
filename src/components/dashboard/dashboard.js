@@ -15,7 +15,8 @@ import {
   LoginButton,
   AccessToken
 } from 'react-native-fbsdk';
-import { ActionButton, Toolbar } from 'react-native-material-ui';
+import { COLOR, ActionButton, Toolbar } from 'react-native-material-ui';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as firebase from 'firebase';
 import DashboardItem from './dashboard_item';
 
@@ -93,9 +94,7 @@ class Dashboard extends React.Component {
       <View style={ styles.content }>
         <Toolbar
           style={{ container: { paddingTop: 35, paddingBottom: 20, height: 65 } }}
-          leftElement="menu"
-          onLeftElementPress={() => this.props.navigation.navigate('DrawerOpen')}
-          centerElement={`Welcome, ${ this.props.currentUser.name }!`}
+          centerElement={`My Trips`}
         />
         <View style={ styles.header }>
           <StatusBar barStyle="light-content" />
@@ -115,23 +114,22 @@ class Dashboard extends React.Component {
            visible={ this.state.modalVisible }>
            <View style={ styles.modalContainer }>
              <View style={ styles.innerModalContainer }>
-               <Text style={ { fontSize: 22, fontWeight: '500', paddingBottom: 10, paddingTop: 18 } }>Join A Trip!</Text>
+               <Icon name='close'
+                 size={ 18 }
+                 style={{ position: 'absolute', top: 12, left: 12 }}
+                 onPress={() => this.setModalVisible(false)}
+                 color={COLOR.grey700} />
+               <Text style={ { fontSize: 22, fontWeight: '500', paddingBottom: 10, paddingTop: 18 } }>Join a trip!</Text>
                <TextInput
                  style={ { width: 200, textAlign: 'center', paddingBottom: 10 } }
                  placeholder="Enter code"
                  onChangeText={ this.handleChange }/>
                <TouchableHighlight onPress={ this.handlePress }>
-                 <Text style={ {color: 'green', paddingBottom: 10 } }>
+                 <Text style={ {color: COLOR.blue700, paddingBottom: 10, fontSize: 20 } }>
                    Join
                  </Text>
                </TouchableHighlight>
-               <TouchableHighlight onPress={() => {
-                   this.setModalVisible(!this.state.modalVisible);
-                 }}>
-                 <Text style={ { color: 'red', paddingBottom: 10 } }>
-                   Cancel
-                 </Text>
-               </TouchableHighlight>
+
                <Text>
                  { this.state.error }
                </Text>
@@ -179,6 +177,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'white',
     borderRadius: 20,
+    position: 'relative'
   }
 });
 

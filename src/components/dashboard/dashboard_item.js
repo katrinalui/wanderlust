@@ -1,14 +1,10 @@
 import React from 'react';
 import Swipeout from 'react-native-swipeout';
-import { Dimensions, View, Text, Share, Button } from 'react-native';
+import { Dimensions, View, Text, Share, Button, StyleSheet } from 'react-native';
+import { ListItem } from 'react-native-material-ui';
 import { deleteTrip } from '../../util/trip_api_util';
 
 const { width } = Dimensions.get('window');
-const style = {
-  width,
-  height: 60,
-  fontSize: 24,
-};
 
 class DashboardItem extends React.Component {
   constructor(props) {
@@ -64,18 +60,33 @@ class DashboardItem extends React.Component {
 
     return (
       <Swipeout right={swipeoutBtns}>
-        <View style={{
-          borderBottomColor: 'black',
-          borderBottomWidth: 1
-        }}>
-          <Text style={ style }
-                onPress={this.handlePress}>
-            {this.props.title}
-          </Text>
-        </View>
+        <ListItem
+          divider
+          centerElement={this.props.title}
+          onPress={this.handlePress}
+          style={styles}
+        />
+
       </Swipeout>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    width,
+    height: 60,
+    justifyContent: 'center',
+    backgroundColor: '#253058'
+  },
+  centerElementContainer: {
+    justifyContent: 'center'
+  },
+  primaryText: {
+    fontSize: 18,
+    color: 'white',
+    fontWeight: "300"
+  }
+});
 
 export default DashboardItem;
