@@ -22,7 +22,12 @@ const Routers = StackNavigator(
         gesturesEnabled: false
       }
     },
-    Chat: { screen: ChatContainer },
+    Chat: {
+      screen: ChatContainer,
+      navigationOptions: {
+        gesturesEnabled: false
+      }
+    },
     TripMap: { screen: TripMapContainer },
     NewTripForm: { screen: NewTripFormContainer },
     EditTripForm: { screen: EditTripFormContainer },

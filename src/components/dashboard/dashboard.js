@@ -91,7 +91,7 @@ class Dashboard extends React.Component {
     return (
       <View style={ styles.content }>
         <Toolbar
-          style={{ container: { paddingTop: 35, paddingBottom: 20, height: 65 } }}
+          style={{ container: { paddingTop: 35, paddingBottom: 20, height: 65, borderBottomColor: 'grey', borderBottomWidth: 1 } }}
           centerElement={`My Trips`}
         />
         <View style={ styles.header }>

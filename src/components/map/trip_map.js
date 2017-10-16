@@ -63,7 +63,6 @@ class TripMap extends React.Component {
            })
            .then(res => {
              markersRef.on('value', markerSnap => {
-               console.log('markerSnap', markerSnap.val());
                if (markerSnap.val()) {
                  this.setState({ markers: Object.values(markerSnap.val()),
                                 days});
