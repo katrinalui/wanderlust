@@ -67,9 +67,11 @@ class Dashboard extends React.Component {
     tripRef.once('value', tripSnap => {
 
       if (tripSnap.val()) {
-        tripTitle = tripSnap.val().title;
+        const tripMembersRef = firebase.database().ref(`/trips/${this.state.addTripID}/members`);
         const userID = this.props.currentUser.id;
         const usersTripsRef = firebase.database().ref(`/users/${userID}/trips/`);
+        tripMembersRef.update({ [userID]: this.props.currentUser.name });
+        tripTitle = tripSnap.val().title;
         usersTripsRef.update({ [tripSnap.val().id]: tripTitle });
         this.redirectToChat();
       } else {
