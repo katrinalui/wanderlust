@@ -24,10 +24,10 @@ class TripMap extends React.Component {
     this.tripID = this.props.navigation.state.params.id;
     this.state = { markers: [],
                    region: {
-                     latitude: 37.78825,
-                     longitude: -122.4324,
-                     latitudeDelta: 0.0922,
-                     longitudeDelta: 0.0421
+                     latitude: 21.21092611286193,
+                     longitude: -33.45021902507677,
+                     latitudeDelta: 141.6785003679752,
+                     longitudeDelta: 131.744584745511
                    },
                    modalVisible: false,
                    marker: {
@@ -116,8 +116,8 @@ class TripMap extends React.Component {
                                       region: {
                                         latitude: lat,
                                         longitude: lng,
-                                        latitudeDelta: this.state.region.latitudeDelta,
-                                        longitudeDelta: this.state.region.longitudeDelta
+                                        latitudeDelta: 0.0922,
+                                        longitudeDelta: 0.0421
                                       }
                                     });
                                   }}

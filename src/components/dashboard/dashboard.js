@@ -55,7 +55,7 @@ class Dashboard extends React.Component {
   handlePress() {
 
     if (!this.state.addTripID) {
-      this.setState({ error: 'Please enter a trip code.'});
+      this.setState({ error: 'Please enter a valid trip code.'});
     } else {
       this.postToFirebase();
     }
@@ -70,10 +70,10 @@ class Dashboard extends React.Component {
         tripTitle = tripSnap.val().title;
         const userID = this.props.currentUser.id;
         const usersTripsRef = firebase.database().ref(`/users/${userID}/trips/`);
-        usersTripsRef.update({[tripSnap.val().id]: tripTitle });
+        usersTripsRef.update({ [tripSnap.val().id]: tripTitle });
         this.redirectToChat();
       } else {
-        this.setState({error: 'Invalid Trip Code'});
+        this.setState({ error: 'Invalid Trip Code' });
       }
     } );
   }
@@ -90,7 +90,7 @@ class Dashboard extends React.Component {
     return (
       <View style={ styles.content }>
         <Toolbar
-          style={ { container: { paddingTop: 35, paddingBottom: 20, height: 65 } } }
+          style={{ container: { paddingTop: 35, paddingBottom: 20, height: 65 } }}
           leftElement="menu"
           onLeftElementPress={() => this.props.navigation.navigate('DrawerOpen')}
           centerElement={`Welcome, ${ this.props.currentUser.name }!`}
@@ -100,42 +100,47 @@ class Dashboard extends React.Component {
         </View>
         <FlatList bounces={ false }
                   data={ this.props.trips }
-                  keyExtractor={item => Object.keys(item)[0]}
+                  keyExtractor={ item => Object.keys(item)[0] }
                   renderItem={ ({ item }) =>
                     <DashboardItem
-                                   id={ Object.keys(item)[0]}
+                                   id={ Object.keys(item)[0] }
                                    title={ Object.values(item)[0] }
-                                   navigation={ this.props.navigation }/> }/>
+                                   navigation={ this.props.navigation }
+                                   /> }/>
          <Modal
            animationType="slide"
-           transparent={true}
-           visible={this.state.modalVisible}>
+           transparent={ true }
+           visible={ this.state.modalVisible }>
            <View style={ styles.modalContainer }>
              <View style={ styles.innerModalContainer }>
-               <Text style={ { fontSize: 22, fontWeight: '500' } }>Join A Trip!</Text>
-                 <TextInput
-                   style={{width: 200}}
-                   placeholder="Enter Code"
-                   onChangeText={ this.handleChange }/>
-                <TouchableHighlight onPress={this.handlePress}>
-                   <Text style={ { color: 'green' } }>
-                     Join
-                   </Text>
-                 </TouchableHighlight>
-                 <TouchableHighlight onPress={() => {
-                     this.setModalVisible(!this.state.modalVisible);
-                   }}>
-                   <Text style={ { color: 'red' } }>Cancel</Text>
-                 </TouchableHighlight>
-                 <Text>
-                   { this.state.error }
+               <Text style={ { fontSize: 22, fontWeight: '500', paddingBottom: 10, paddingTop: 18 } }>Join A Trip!</Text>
+               <TextInput
+                 style={ { width: 200, textAlign: 'center', paddingBottom: 10 } }
+                 placeholder="Enter code"
+                 onChangeText={ this.handleChange }/>
+               <TouchableHighlight onPress={ this.handlePress }>
+                 <Text style={ {color: 'green', paddingBottom: 10 } }>
+                   Join
                  </Text>
+               </TouchableHighlight>
+               <TouchableHighlight onPress={() => {
+                   this.setModalVisible(!this.state.modalVisible);
+                 }}>
+                 <Text style={ { color: 'red', paddingBottom: 10 } }>
+                   Cancel
+                 </Text>
+               </TouchableHighlight>
+               <Text>
+                 { this.state.error }
+               </Text>
              </View>
            </View>
          </Modal>
         <TouchableHighlight
-          onPress={ () => {this.setModalVisible(true); }}>
-          <Text style={ { color: 'white', fontSize: 20, paddingTop: 15 } }>Join Trip</Text>
+          onPress={() => { this.setModalVisible(true); } }>
+          <Text style={ { color: 'white', fontSize: 20, paddingTop: 15 } }>
+            Join Trip
+          </Text>
         </TouchableHighlight>
         <ActionButton onPress={ this.redirectToTripForm } />
       </View>
@@ -169,11 +174,9 @@ const styles = StyleSheet.create({
   innerModalContainer: {
     width: 300,
     height: 150,
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
-    borderRadius: 20
+    borderRadius: 20,
   }
 });
 
