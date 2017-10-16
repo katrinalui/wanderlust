@@ -133,7 +133,8 @@ class NewTripForm extends React.Component {
 
         <FlatList data={ errors }
                   keyExtractor={item => Object.keys(item)[0]}
-                  renderItem={ ({ item }) => <Text>{ Object.values(item)[0] }</Text>} />
+                  renderItem={ ({ item }) =>
+                  <Text style={styles.errors}>{ Object.values(item)[0] }</Text>} />
         </View>
 
         <Modal
@@ -142,13 +143,15 @@ class NewTripForm extends React.Component {
           visible={this.state.modalVisible}>
           <View style={ styles.modalContainer }>
             <View style={ styles.innerModalContainer }>
-              <Text>Your trip has been created!</Text>
+              <Text style={styles.successText}>Your trip has been created!</Text>
               <Button
+                color="#00A9A5"
                 onPress={this._shareTextMessage.bind(this)}
                 title="Invite your friends" />
 
               <Button
                 onPress={this.redirectToTrip.bind(this)}
+                color="#223873"
                 title="Continue" />
             </View>
           </View>
@@ -190,6 +193,9 @@ const styles = StyleSheet.create({
   dateInput: {
     color: 'white'
   },
+  errors: {
+    color: 'red'
+  },
   modalContainer: {
     padding: 25,
     flex: 1,
@@ -197,50 +203,16 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   innerModalContainer: {
-    width: 200,
+    width: 250,
     height: 150,
+    borderRadius: 20,
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: 'white'
   },
-  inputContainer: {
-    flex: 1,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  viewContainer: {
-    flex: 1,
-    flexDirection: 'row'
-  },
-  paddingView: {
-    width: 15
-  },
-  floatingLabel: {
-    position: 'absolute',
-    top: 0,
-    left: 0
-  },
-  fieldLabel: {
-    height: 15,
-    fontSize: 10,
-    color: '#B1B1B1'
-  },
-  fieldContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    position: 'relative'
-  },
-  withBorder: {
-    borderBottomWidth: 1 / 2,
-    borderColor: '#C8C7CC',
-  },
-  valueText: {
-    height: 20,
-    fontSize: 16,
-    color: '#111111'
-  },
-  focused: {
-    color: "#1482fe"
+  successText: {
+    fontSize: 18,
+    marginBottom: 10
   }
 });
 
