@@ -8,7 +8,10 @@ import {
   Modal,
   TouchableOpacity,
   TextInput,
-  Picker
+  Picker,
+  Keyboard,
+  KeyboardAvoidingView,
+  StyleSheet
 } from 'react-native';
 
 import MapView from 'react-native-maps';
@@ -84,141 +87,148 @@ class TripMap extends React.Component {
   render() {
     let pickerArray = [];
     for (var i = 1; i < (this.state.days + 1); i++) {
-      pickerArray.push(<Picker.Item label={ i.toString() } value={ i.toString() } />);
+      pickerArray.push(<Picker.Item key={ i.toString() } label={ i.toString() } value={ i.toString() } />);
     }
 
     return (
-      <View>
-        <TripToolbar
-          type="map"
-          tripID={this.tripID}
-          title={this.props.navigation.state.params.title}
-          navigation={this.props.navigation} />
+        <View>
+          <TripToolbar
+            type="map"
+            tripID={this.tripID}
+            title={this.props.navigation.state.params.title}
+            navigation={this.props.navigation} />
 
-        <GooglePlacesAutocomplete placeholder='Search...'
-                                  minLength={ 2 }
-                                  autoFocus={ false }
-                                  returnKeyType={ 'search' }
-                                  listViewDisplayed={ 'auto' }
-                                  fetchDetails={ true }
-                                  getDefaultValue={() => {
-                                    return '';
-                                  }}
+          <GooglePlacesAutocomplete placeholder='Search...'
+            minLength={ 2 }
+            autoFocus={ false }
+            returnKeyType={ 'search' }
+            listViewDisplayed={ 'auto' }
+            fetchDetails={ true }
+            getDefaultValue={() => {
+              return '';
+            }}
 
-                                  query={{
-                                    key: 'AIzaSyBJum-YS-ekRtpyH4f5N1uiUsRv7yBxb5s',
-                                    language: 'en'
-                                  }}
+            query={{
+              key: 'AIzaSyBJum-YS-ekRtpyH4f5N1uiUsRv7yBxb5s',
+              language: 'en'
+            }}
 
-                                  onPress={(data, details = null) => {
-                                    const { lat, lng } = details.geometry.location;
-                                    this.setState({
-                                      region: {
-                                        latitude: lat,
-                                        longitude: lng,
-                                        latitudeDelta: 0.0922,
-                                        longitudeDelta: 0.0421
-                                      }
-                                    });
-                                  }}
+            onPress={(data, details = null) => {
+              const { lat, lng } = details.geometry.location;
+              this.setState({
+                region: {
+                  latitude: lat,
+                  longitude: lng,
+                  latitudeDelta: 0.0922,
+                  longitudeDelta: 0.0421
+                }
+              });
+            }}
 
-                                  renderDescription={(row) => {
-                                    return row.description;
-                                    }}
+            renderDescription={(row) => {
+              return row.description;
+            }}
 
-                                  styles={{
-                                    container: {
-                                      zIndex: 100
-                                    },
-                                    textInputContainer: {
-                                      position: 'relative',
-                                      width: '100%',
-                                      backgroundColor: '#1f2b4b'
-                                    },
-                                    description: {
-                                      fontWeight: 'bold'
-                                    },
-                                    predefinedPlacesDescription: {
-                                      color: 'black'
-                                    },
-                                    listView: {
-                                      position: 'absolute',
-                                      top: 43,
-                                      backgroundColor: 'white'
-                                    }
-                                  }}
-                                  nearbyPlacesAPI='GooglePlacesSearch'
-                                  debounce={ 1000 }
-                                  />
+            styles={{
+              container: {
+                zIndex: 100
+              },
+              textInputContainer: {
+                position: 'relative',
+                width: '100%',
+                backgroundColor: '#1f2b4b'
+              },
+              description: {
+                fontWeight: 'bold'
+              },
+              predefinedPlacesDescription: {
+                color: 'black'
+              },
+              listView: {
+                position: 'absolute',
+                top: 43,
+                backgroundColor: 'white'
+              }
+            }}
+            nearbyPlacesAPI='GooglePlacesSearch'
+            debounce={ 1000 }
+            />
 
-        <MapView
-          onLongPress={ this.handleMapPress }
-          style={ { height, width } }
-          region={ this.state.region }
-          onRegionChangeComplete={ this.handleRegionChange }
-          onRegionChange={ this.handleRegionChange }>
-          { this.state.markers.map(marker => (
-            <MapView.Marker
-              coordinate={ marker.latlng }
-              onPress={ this.handleMarkerPress }
-              pinColor='#00007f'>
-              <MapView.Callout tooltip={ false }>
-                <View style={ { flex: 1, justifyContent: 'center', alignItems: 'center', width: 150 } }>
-                  <Text>Notes: { marker.title }</Text>
-                  <Text>Day: { marker.day }</Text>
-                  <TouchableOpacity onPress={ e => this.handleDelete(e, marker.id) }>
-                    <Text style={ { fontSize: 12 } }>Delete?</Text>
-                  </TouchableOpacity>
-                </View>
-              </MapView.Callout>
-            </MapView.Marker>
-          ))}
-        </MapView>
+          <MapView
+            onLongPress={ this.handleMapPress }
+            onPress={ Keyboard.dismiss }
+            style={ { height, width } }
+            region={ this.state.region }
+            onRegionChangeComplete={ this.handleRegionChange }
+            onRegionChange={ this.handleRegionChange }>
+            { this.state.markers.map(marker => (
+              <MapView.Marker
+                coordinate={ marker.latlng }
+                onPress={ this.handleMarkerPress }
+                pinColor='#00007f'
+                key={ marker.id }>
+                <MapView.Callout tooltip={ false }>
+                  <View style={ { flex: 1, justifyContent: 'center', alignItems: 'center', width: 120 } }>
+                    <View style={ { paddingBottom: 5 } }>
+                      <Text style={ { fontWeight: 'bold' } }>Notes:</Text>
+                    </View>
+                    <View style={ { paddingBottom: 5 } }>
+                      <Text>{ marker.title }</Text>
+                    </View>
+                    <Text style={ { paddingBottom: 5 } } >Day { marker.day }</Text>
+                    <TouchableOpacity onPress={ e => this.handleDelete(e, marker.id) }>
+                      <Text style={ { fontSize: 14, color: 'red' } }>Delete?</Text>
+                    </TouchableOpacity>
+                  </View>
+                </MapView.Callout>
+              </MapView.Marker>
+            ))}
+          </MapView>
 
 
-        <Modal
-          animationType="slide"
-          transparent={ true }
-          visible={ this.state.modalVisible } >
+          <Modal
+            animationType="slide"
+            transparent={ true }
+            visible={ this.state.modalVisible } >
 
             <View style={
-                { marginTop: height - 200,
+                { marginTop: height - 250,
                   width,
                   backgroundColor: 'white',
                   flex: 1,
                   alignItems: 'center',
                   justifyContent: 'center'}
                 } >
-              <View style={ { flex: 1, justifyContent: 'center', alignItems: 'center' } }>
-                <View style={ { flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingBottom: 20 } }>
-                  <Text style={ { fontSize: 16, paddingRight: 25 } }>Notes</Text>
-                  <TextInput style={ { width: 100 } }
-                             placeholder='(optional)'
-                             onChange={ this.handleMarkerTitleInput } />
-                </View>
-
                 <View style={ { flex: 1, justifyContent: 'center', alignItems: 'center' } }>
-                  <Text style={ { fontSize: 16 } }>Which day will you be going?</Text>
-                  <Picker style={ {height: 100, width } }
-                    itemStyle={ { height: 100, fontSize: 12 } }
-                    selectedValue={ this.state.marker.day }
-                    onValueChange={ this.handleMarkerDayInput } >
-                    { pickerArray }
-                  </Picker>
+                  <View style={ { flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingBottom: 20 } }>
+                    <Text style={ { fontSize: 14, paddingRight: 25, fontWeight:'bold' } }>Notes</Text>
+                    <TextInput style={ { width: 100, fontSize: 12 } }
+                      placeholder='(optional)'
+                      onChange={ this.handleMarkerTitleInput } />
+                  </View>
+
+                  <View style={ { flex: 1, justifyContent: 'center', alignItems: 'center', paddingBottom: 15 } }>
+                    <Text style={ { fontSize: 14 , fontWeight: 'bold' } }>Which day will you be going?</Text>
+                    <Picker style={ {height: 100, width } }
+                      itemStyle={ { height: 100, fontSize: 14 } }
+                      selectedValue={ this.state.marker.day }
+                      onValueChange={ this.handleMarkerDayInput } >
+                      { pickerArray }
+                    </Picker>
+                  </View>
+
+                  <TouchableOpacity onPress={ this.handleModalSubmit }>
+                    <Text style={ { color: 'green' , paddingBottom: 20, fontWeight: 'bold' } }>Submit</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity onPress={ this.handleModalClose } >
+                    <Text style={ { fontWeight: 'bold', paddingBottom: 20 } }>Close</Text>
+                  </TouchableOpacity>
                 </View>
-
-                <Button title='Submit'
-                        onPress={ this.handleModalSubmit } />
-
-                <TouchableOpacity onPress={ this.handleModalClose } >
-                  <Text style={ { fontWeight: 'bold', paddingBottom: 20 } }>X</Text>
-                </TouchableOpacity>
               </View>
-         </View>
+            </Modal>
 
-        </Modal>
-
-      </View>
+        </View>
     );
   }
 
@@ -281,12 +291,19 @@ class TripMap extends React.Component {
   handleMapPress(e) {
     const { title, day } = this.state.marker;
     const { latitude, longitude } = e.nativeEvent.coordinate;
+    const { latitudeDelta, longitudeDelta } = this.state.region;
     this.setState({ modalVisible: true,
                     marker: {
                       title,
                       day,
                       longitude,
                       latitude
+                    },
+                    region: {
+                      longitude,
+                      latitude,
+                      longitudeDelta,
+                      latitudeDelta
                     }
                   });
   }
@@ -300,3 +317,14 @@ class TripMap extends React.Component {
 }
 
 export default TripMap;
+
+const styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    flex: 1,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+  }
+});
