@@ -39,6 +39,15 @@ class FacebookLogin extends React.Component {
     }
   }
 
+  loginDemo(email, id) {
+    firebase.auth().signInWithEmailAndPassword(email, "password")
+    .then(() => {
+      firebase.database().ref(`/users/${id}`)
+              .on('value', (snap) => this.props.receiveCurrentUser(snap.val()));
+      this.props.navigation.navigate('Dashboard');
+    });
+  }
+
   render() {
     const style = this.buttonStyle();
 
@@ -99,6 +108,16 @@ class FacebookLogin extends React.Component {
             }
           }
           />
+        <View style={styles.buttons}>
+          <Button
+            title="Demo One"
+            color="white"
+            onPress={this.loginDemo.bind(this, "demo@gmail.com", "csb2fw0P8wTNoIPCsqo6FvWzoYY2")}/>
+          <Button
+            title="Demo Two"
+            color="white"
+            onPress={this.loginDemo.bind(this, "demo2@gmail.com", "rPWhCs85A4Zq6uVfylRjfVWO3zi2")}/>
+        </View>
       </View>
     );
   }
@@ -114,4 +133,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     height: 70
   },
+  buttons: {
+    marginTop: 10
+  }
 });
