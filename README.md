@@ -1,10 +1,10 @@
 # Wanderlust
 ![logo](https://raw.githubusercontent.com/katrinalui/wanderlust/master/docs/readme_images/Wanderlust_long_multi.png)
 
-[Link to Wanderlust Demo](https://www.google.com)
+[Link to Wanderlust Demo](https://katrinalui.github.io/wanderlust/)
 
 ## Summary
-[Wanderlust](https://www.google.com) is a collaborative mobile app that allows users to plan an itinerary in realtime by utilizing a chatroom and a Google map.
+[Wanderlust](https://katrinalui.github.io/wanderlust/) is a collaborative mobile app that allows users to plan an itinerary in realtime by utilizing a chatroom and a Google map.
 
 Wanderlust allows user to:
 - Login/Logout (using Facebook)
