@@ -8,7 +8,8 @@ import { TextInput,
          Modal,
          StyleSheet } from 'react-native';
 import DatePicker from 'react-native-datepicker';
-// import FloatLabelTextField from 'react-native-floating-label-text-input';
+import FloatLabelTextField from '../form/float_label_text_field';
+import FloatLabelDatePicker from '../form/float_label_datepicker';
 import * as firebase from 'firebase';
 
 class NewTripForm extends React.Component {
@@ -88,39 +89,41 @@ class NewTripForm extends React.Component {
 
     return (
       <View style={ styles.container }>
-        <Text>Create a Trip</Text>
+        <Text style={styles.title}>Create a Trip</Text>
 
         <FloatLabelTextField
           placeholder="Title"
+          placeholderTextColor="#B1B1B1"
           value={this.state.title}
           maxLength={50}
           onChangeTextValue={text => this.handleChange(text, 'title')}
         />
 
-        <Text>Start Date</Text>
+        <View style={styles.dateContainer}>
+            <FloatLabelDatePicker
+              style={styles.datePicker}
+              customStyles={{dateText: styles.dateInput}}
+              date={ this.state.startDate }
+              placeholder="Start Date"
+              noBorder={true}
+              onChangeDateValue={ (date) => this.handleChange(date, 'startDate') }
+              minDate={ new Date }
+            />
 
-        <DatePicker
-          style={{width: 200}}
-          date={ this.state.startDate }
-          placeholder="Select Start Date"
-          format='YYYY-MM-DD'
-          confirmBtnText="Confirm"
-          cancelBtnText="Cancel"
-          onDateChange={ (date) => this.handleChange(date, 'startDate') }
-          minDate={ new Date } />
+            <FloatLabelDatePicker
+              style={styles.datePicker}
+              customStyles={{dateText: styles.dateInput}}
+              date={ this.state.endDate }
+              placeholder="End Date"
+              noBorder={true}
+              onChangeDateValue={ (date) => this.handleChange(date, 'endDate') }
+              minDate={ this.state.startDate || new Date }
+            />
+          </View>
 
-        <Text>End Date</Text>
-        <DatePicker
-          style={{width: 200}}
-          date={ this.state.endDate }
-          placeholder="Select End Date"
-          format='YYYY-MM-DD'
-          confirmBtnText="Confirm"
-          cancelBtnText="Cancel"
-          onDateChange={ (date) => this.handleChange(date, 'endDate') }
-          minDate={ this.state.startDate || new Date } />
 
         <Button title='Create'
+                color='white'
                 onPress={ this.handleSubmit } />
 
         <FlatList data={ errors }
@@ -151,10 +154,30 @@ class NewTripForm extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 25,
     flex: 1,
+    backgroundColor: "#1F2B4B",
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingVertical: 100,
+    paddingHorizontal: 25
+  },
+  title: {
+    fontSize: 18,
+    marginBottom: 80,
+    color: 'white'
+  },
+  dateContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 15
+  },
+  datePicker: {
+    flex: 0.5,
+    width: 155
+  },
+  dateInput: {
+    color: 'white'
   },
   modalContainer: {
     padding: 25,

@@ -7,6 +7,7 @@ import {
   Animated,
   Platform
 } from 'react-native';
+import DatePicker from 'react-native-datepicker';
 
 class FloatingLabel extends Component {
   constructor(props) {
@@ -71,18 +72,18 @@ class TextFieldHolder extends Component {
   }
 }
 
-class FloatLabelTextField extends Component {
+class FloatLabelDatePicker extends Component {
   constructor(props) {
     super(props);
     this.state = {
       focused: false,
-      text: this.props.value
+      date: this.props.date
     };
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.hasOwnProperty('value') && newProps.value !== this.state.text) {
-      this.setState({ text: newProps.value });
+    if (newProps.hasOwnProperty('date') && newProps.date !== this.state.date) {
+      this.setState({ date: newProps.date });
     }
   }
 
@@ -102,21 +103,16 @@ class FloatLabelTextField extends Component {
         <View style={styles.viewContainer}>
           <View style={[styles.paddingView, this.leftPadding()]} />
           <View style={[styles.fieldContainer, this.withBorder()]}>
-            <FloatingLabel visible={this.state.text}>
+            <FloatingLabel visible={this.state.date}>
               <Text style={[styles.fieldLabel, this.labelStyle()]}>{this.placeholderValue()}</Text>
             </FloatingLabel>
-            <TextFieldHolder withValue={this.state.text}>
-              <TextInput {...this.props}
-                ref='input'
-                underlineColorAndroid="transparent"
-                style={[styles.valueText]}
-                defaultValue={this.props.defaultValue}
-                value={this.state.text}
-                maxLength={this.props.maxLength}
-                onFocus={() => this.setFocus()}
-                onBlur={() => this.unsetFocus()}
-                onChangeText={(value) => this.setText(value)}
-                />
+            <TextFieldHolder withValue={this.state.date}>
+              <DatePicker {...this.props}
+                format='YYYY-MM-DD'
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                showIcon={false}
+                onDateChange={(value) => this.setDate(value)} />
             </TextFieldHolder>
           </View>
         </View>
@@ -169,17 +165,17 @@ class FloatLabelTextField extends Component {
   }
 
   placeholderValue() {
-    if (this.state.text) {
+    if (this.state.date) {
       return this.props.placeholder;
     }
   }
 
-  setText(value) {
+  setDate(value) {
     this.setState({
-      text: value
+      date: value
     });
     try {
-      return this.props.onChangeTextValue(value);
+      return this.props.onChangeDateValue(value);
     } catch (_error) { }
   }
 }
@@ -187,7 +183,7 @@ class FloatLabelTextField extends Component {
 const styles = StyleSheet.create({
   inputContainer: {
     flex: 1,
-    height: 40,
+    height: 50,
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -224,8 +220,8 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   focused: {
-    color: "#1482fe"
+    color: "#B1B1B1"
   }
 });
 
-export default FloatLabelTextField;
+export default FloatLabelDatePicker;
