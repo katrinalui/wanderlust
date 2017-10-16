@@ -7,7 +7,7 @@ import { TextInput,
          Share,
          Modal,
          StyleSheet } from 'react-native';
-import DatePicker from 'react-native-datepicker';
+import { Toolbar } from 'react-native-material-ui';
 import FloatLabelTextField from '../form/float_label_text_field';
 import FloatLabelDatePicker from '../form/float_label_datepicker';
 import * as firebase from 'firebase';
@@ -89,8 +89,13 @@ class NewTripForm extends React.Component {
 
     return (
       <View style={ styles.container }>
+        <Toolbar
+          style={{ container: { paddingTop: 45, height: 70 } }}
+          leftElement="chevron-left"
+          onLeftElementPress={() => this.props.navigation.navigate("Dashboard")}
+        />
+      <View style={styles.formContainer}>
         <Text style={styles.title}>Create a Trip</Text>
-
         <FloatLabelTextField
           placeholder="Title"
           placeholderTextColor="#B1B1B1"
@@ -129,10 +134,11 @@ class NewTripForm extends React.Component {
         <FlatList data={ errors }
                   keyExtractor={item => Object.keys(item)[0]}
                   renderItem={ ({ item }) => <Text>{ Object.values(item)[0] }</Text>} />
+        </View>
 
         <Modal
           animationType="slide"
-          transparent={false}
+          transparent={true}
           visible={this.state.modalVisible}>
           <View style={ styles.modalContainer }>
             <View style={ styles.innerModalContainer }>
@@ -157,12 +163,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#1F2B4B",
     justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 100,
-    paddingHorizontal: 25
+    alignItems: 'center'
+  },
+  formContainer: {
+    flex: 1,
+    paddingHorizontal: 20,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   title: {
     fontSize: 18,
+    marginTop: 100,
     marginBottom: 80,
     color: 'white'
   },
@@ -188,7 +199,8 @@ const styles = StyleSheet.create({
   innerModalContainer: {
     width: 200,
     height: 150,
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: 'white'
   },
   inputContainer: {
     flex: 1,
@@ -233,185 +245,3 @@ const styles = StyleSheet.create({
 });
 
 export default NewTripForm;
-
-import { Component } from 'react';
-import {
-  Animated,
-  Platform
-} from 'react-native';
-
-class FloatingLabel extends Component {
-  constructor(props) {
-    super(props);
-
-    let initialPadding = 9;
-    let initialOpacity = 0;
-
-    if (this.props.visible) {
-      initialPadding = 5;
-      initialOpacity = 1;
-    }
-
-    this.state = {
-      paddingAnim: new Animated.Value(initialPadding),
-      opacityAnim: new Animated.Value(initialOpacity)
-    };
-  }
-
-  componentWillReceiveProps(newProps) {
-    Animated.timing(this.state.paddingAnim, {
-      toValue: newProps.visible ? 5 : 9,
-      duration: 230
-    }).start();
-
-    return Animated.timing(this.state.opacityAnim, {
-      toValue: newProps.visible ? 1 : 0,
-      duration: 230
-    }).start();
-  }
-
-  render() {
-    return (
-      <Animated.View style={[styles.floatingLabel, { paddingTop: this.state.paddingAnim, opacity: this.state.opacityAnim }]}>
-        {this.props.children}
-      </Animated.View>
-    );
-  }
-}
-
-class TextFieldHolder extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      marginAnim: new Animated.Value(this.props.withValue ? 10 : 0)
-    };
-  }
-
-  componentWillReceiveProps(newProps) {
-    return Animated.timing(this.state.marginAnim, {
-      toValue: newProps.withValue ? 10 : 0,
-      duration: 230
-    }).start();
-  }
-
-  render() {
-    return (
-      <Animated.View style={{ marginTop: this.state.marginAnim }}>
-        {this.props.children}
-      </Animated.View>
-    );
-  }
-}
-
-class FloatLabelTextField extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      focused: false,
-      text: this.props.value
-    };
-  }
-
-  componentWillReceiveProps(newProps) {
-    if (newProps.hasOwnProperty('value') && newProps.value !== this.state.text) {
-      this.setState({ text: newProps.value });
-    }
-  }
-
-  leftPadding() {
-    return { width: this.props.leftPadding || 0 };
-  }
-
-  withBorder() {
-    if (!this.props.noBorder) {
-      return styles.withBorder;
-    }
-  }
-
-  render() {
-    return (
-      <View style={styles.inputContainer}>
-        <View style={styles.viewContainer}>
-          <View style={[styles.paddingView, this.leftPadding()]} />
-          <View style={[styles.fieldContainer, this.withBorder()]}>
-            <FloatingLabel visible={this.state.text}>
-              <Text style={[styles.fieldLabel, this.labelStyle()]}>{this.placeholderValue()}</Text>
-            </FloatingLabel>
-            <TextFieldHolder withValue={this.state.text}>
-              <TextInput {...this.props}
-                ref='input'
-                underlineColorAndroid="transparent"
-                style={[styles.valueText]}
-                defaultValue={this.props.defaultValue}
-                value={this.state.text}
-                maxLength={this.props.maxLength}
-                onFocus={() => this.setFocus()}
-                onBlur={() => this.unsetFocus()}
-                onChangeText={(value) => this.setText(value)}
-                />
-            </TextFieldHolder>
-          </View>
-        </View>
-      </View>
-    );
-  }
-
-  inputRef() {
-    return this.refs.input;
-  }
-
-  focus() {
-    this.inputRef().focus();
-  }
-
-  blur() {
-    this.inputRef().blur();
-  }
-
-  isFocused() {
-    return this.inputRef().isFocused();
-  }
-
-  clear() {
-    this.inputRef().clear();
-  }
-
-  setFocus() {
-    this.setState({
-      focused: true
-    });
-    try {
-      return this.props.onFocus();
-    } catch (_error) { }
-  }
-
-  unsetFocus() {
-    this.setState({
-      focused: false
-    });
-    try {
-      return this.props.onBlur();
-    } catch (_error) { }
-  }
-
-  labelStyle() {
-    if (this.state.focused) {
-      return styles.focused;
-    }
-  }
-
-  placeholderValue() {
-    if (this.state.text) {
-      return this.props.placeholder;
-    }
-  }
-
-  setText(value) {
-    this.setState({
-      text: value
-    });
-    try {
-      return this.props.onChangeTextValue(value);
-    } catch (_error) { }
-  }
-}

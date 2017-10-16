@@ -4,6 +4,7 @@ import DatePicker from 'react-native-datepicker';
 import FloatLabelTextField from '../form/float_label_text_field';
 import FloatLabelDatePicker from '../form/float_label_datepicker';
 import * as firebase from 'firebase';
+import { Toolbar } from 'react-native-material-ui';
 
 class EditTripForm extends React.Component {
   constructor(props) {
@@ -73,6 +74,12 @@ class EditTripForm extends React.Component {
 
     return (
       <View style={styles.container}>
+        <Toolbar
+          style={{ container: { paddingTop: 45, height: 70 } }}
+          leftElement="chevron-left"
+          onLeftElementPress={() => this.props.navigation.navigate("Dashboard")}
+        />
+      <View style={styles.formContainer}>
         <Text style={styles.title}>Edit Trip</Text>
 
           <FloatLabelTextField
@@ -116,7 +123,7 @@ class EditTripForm extends React.Component {
         <FlatList data={ errors }
                   keyExtractor={item => Object.keys(item)[0]}
                   renderItem={ ({ item }) => <Text>{ Object.values(item)[0] }</Text>} />
-
+        </View>
       </View>
     );
   }
@@ -127,12 +134,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#1F2B4B",
     justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 100,
-    paddingHorizontal: 25
+    alignItems: 'center'
+  },
+  formContainer: {
+    flex: 1,
+    paddingHorizontal: 20,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   title: {
     fontSize: 18,
+    marginTop: 100,
     marginBottom: 80,
     color: 'white'
   },
@@ -148,6 +160,57 @@ const styles = StyleSheet.create({
   },
   dateInput: {
     color: 'white'
+  },
+  modalContainer: {
+    padding: 25,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  innerModalContainer: {
+    width: 200,
+    height: 150,
+    alignItems: 'center'
+  },
+  inputContainer: {
+    flex: 1,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  viewContainer: {
+    flex: 1,
+    flexDirection: 'row'
+  },
+  paddingView: {
+    width: 15
+  },
+  floatingLabel: {
+    position: 'absolute',
+    top: 0,
+    left: 0
+  },
+  fieldLabel: {
+    height: 15,
+    fontSize: 10,
+    color: '#B1B1B1'
+  },
+  fieldContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    position: 'relative'
+  },
+  withBorder: {
+    borderBottomWidth: 1 / 2,
+    borderColor: '#C8C7CC',
+  },
+  valueText: {
+    height: 20,
+    fontSize: 16,
+    color: '#111111'
+  },
+  focused: {
+    color: "#1482fe"
   }
 });
 
