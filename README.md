@@ -66,7 +66,7 @@ Each trip has a dedicated chatroom that allows participate to discuss traveling 
 
 Top navigation bar allows users to go back to their dashboard or the current trip's map
 
-![chat](https://raw.githubusercontent.com/katrinalui/wanderlust/master/docs/readme_images/chat_demo2.gif)
+![chat](http://res.cloudinary.com/shuttr/image/upload/v1508136524/chat_demo2-min_nsoeay.gif)
 
 ### Map
 User can search point of interest and create a marker
