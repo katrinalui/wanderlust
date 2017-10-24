@@ -73,7 +73,7 @@ User can search point of interest and create a marker
 
 Each marker allows users to add a note and select the day of the visit or delete a marker.
 
-![map_screencast](https://res.cloudinary.com/shuttr/image/upload/v1508138430/mapscreencast-min_rfke1o.gif)
-![japan_search](https://raw.githubusercontent.com/katrinalui/wanderlust/master/docs/readme_images/japan_search.png)
+![map_screencast](https://res.cloudinary.com/shuttr/image/upload/v1508815866/mapscreencast2_ojjwyy.gif)
+<!-- ![japan_search](https://raw.githubusercontent.com/katrinalui/wanderlust/master/docs/readme_images/japan_search.png)
 ![creating_marker](https://raw.githubusercontent.com/katrinalui/wanderlust/master/docs/readme_images/creating_marker.png)
-![marker_option](https://raw.githubusercontent.com/katrinalui/wanderlust/master/docs/readme_images/marker_options.png)
+![marker_option](https://raw.githubusercontent.com/katrinalui/wanderlust/master/docs/readme_images/marker_options.png) -->
