@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, Button, FlatList, Share, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Keyboard, Button, FlatList, Share, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import FloatLabelTextField from '../form/float_label_text_field';
 import FloatLabelDatePicker from '../form/float_label_datepicker';
@@ -75,55 +75,57 @@ class EditTripForm extends React.Component {
     return (
       <View style={styles.container}>
         <Toolbar
-          style={{ container: { paddingTop: 45, height: 70 } }}
+          style={{ container: { paddingTop: 45, height: 90 } }}
           leftElement="chevron-left"
           onLeftElementPress={() => this.props.navigation.navigate("Dashboard")}
         />
-      <View style={styles.formContainer}>
-        <Text style={styles.title}>Edit Trip</Text>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.formContainer}>
+          <Text style={styles.title}>Edit Trip</Text>
 
-          <FloatLabelTextField
-            placeholder="Title"
-            placeholderTextColor="#B1B1B1"
-            value={this.state.title}
-            maxLength={50}
-            onChangeTextValue={text => this.handleChange(text, 'title')}
-          />
+            <FloatLabelTextField
+              placeholder="Title"
+              placeholderTextColor="#B1B1B1"
+              value={this.state.title}
+              maxLength={50}
+              onChangeTextValue={text => this.handleChange(text, 'title')}
+            />
 
-          <View style={styles.dateContainer}>
-              <FloatLabelDatePicker
-                style={styles.datePicker}
-                customStyles={{dateText: styles.dateInput}}
-                date={ this.state.startDate }
-                placeholder="Start Date"
-                noBorder={true}
-                onChangeDateValue={ (date) => this.handleChange(date, 'startDate') }
-                minDate={ new Date }
-              />
+            <View style={styles.dateContainer}>
+                <FloatLabelDatePicker
+                  style={styles.datePicker}
+                  customStyles={{dateText: styles.dateInput}}
+                  date={ this.state.startDate }
+                  placeholder="Start Date"
+                  noBorder={true}
+                  onChangeDateValue={ (date) => this.handleChange(date, 'startDate') }
+                  minDate={ new Date }
+                />
 
-              <FloatLabelDatePicker
-                style={styles.datePicker}
-                customStyles={{dateText: styles.dateInput}}
-                date={ this.state.endDate }
-                placeholder="End Date"
-                noBorder={true}
-                onChangeDateValue={ (date) => this.handleChange(date, 'endDate') }
-                minDate={ this.state.startDate || new Date }
-              />
+                <FloatLabelDatePicker
+                  style={styles.datePicker}
+                  customStyles={{dateText: styles.dateInput}}
+                  date={ this.state.endDate }
+                  placeholder="End Date"
+                  noBorder={true}
+                  onChangeDateValue={ (date) => this.handleChange(date, 'endDate') }
+                  minDate={ this.state.startDate || new Date }
+                />
+            </View>
+
+            <Button title='Edit'
+              color='white'
+              onPress={ this.handleSubmit }/>
+
+          <Button title='Invite friends to your trip'
+                  color='#00A9A5'
+                  onPress={this._shareTextMessage}/>
+
+          <FlatList data={ errors }
+                    keyExtractor={item => Object.keys(item)[0]}
+                    renderItem={ ({ item }) => <Text>{ Object.values(item)[0] }</Text>} />
           </View>
-
-          <Button title='Edit'
-            color='white'
-            onPress={ this.handleSubmit }/>
-
-        <Button title='Invite friends to your trip'
-                color='#00A9A5'
-                onPress={this._shareTextMessage}/>
-
-        <FlatList data={ errors }
-                  keyExtractor={item => Object.keys(item)[0]}
-                  renderItem={ ({ item }) => <Text>{ Object.values(item)[0] }</Text>} />
-        </View>
+        </TouchableWithoutFeedback>
       </View>
     );
   }
