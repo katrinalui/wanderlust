@@ -11,6 +11,7 @@ import {
   Picker,
   Keyboard,
   KeyboardAvoidingView,
+  TouchableWithoutFeedback,
   StyleSheet
 } from 'react-native';
 
@@ -21,6 +22,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import * as firebase from 'firebase';
 
 const { width, height } = Dimensions.get('window');
+
 class TripMap extends React.Component {
   constructor(props) {
     super(props);
@@ -33,6 +35,7 @@ class TripMap extends React.Component {
                      longitudeDelta: 131.744584745511
                    },
                    modalVisible: false,
+                   modalMargin: height - 250,
                    marker: {
                      title: '',
                      day: '1',
@@ -76,6 +79,16 @@ class TripMap extends React.Component {
           });
         }
       );
+
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardWillShow',
+                                   () => this.setState({modalMargin: height - 350}));
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardWillHide',
+                                   () => this.setState({modalMargin: height - 250}));
+  }
+
+  componentWillUnmount () {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
   }
 
   daysDiff(startDateObj, endDateObj) {
@@ -188,45 +201,58 @@ class TripMap extends React.Component {
           <Modal
             animationType="slide"
             transparent={ true }
-            visible={ this.state.modalVisible } >
+            visible={ this.state.modalVisible }
+          >
 
-            <View style={
-                { marginTop: height - 250,
-                  width,
-                  backgroundColor: 'white',
-                  flex: 1,
-                  alignItems: 'center',
-                  justifyContent: 'center'}
-                } >
-                <View style={ { flex: 1, justifyContent: 'center', alignItems: 'center' } }>
-                  <View style={ { flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingBottom: 20 } }>
-                    <Text style={ { fontSize: 14, paddingRight: 25, fontWeight:'bold' } }>Notes</Text>
-                    <TextInput style={ { width: 100, fontSize: 12 } }
-                      placeholder='(optional)'
-                      onChange={ this.handleMarkerTitleInput } />
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss} style={{ flex: 1 }}>
+              <KeyboardAvoidingView
+                behavior="padding"
+                pointerEvents="box-none"
+                style={{ flex: 1, justifyContent: 'flex-end', transform: [{ translateY: 0 }] }}
+              >
+                <View style={
+                  {
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'flex-end'}
+                  }>
+                  <View style={{
+                    marginTop: this.state.modalMargin,
+                    width,
+                    backgroundColor: 'white',
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <View style={ { flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingBottom: 20 } }>
+                      <Text style={ { fontSize: 14, paddingRight: 25, fontWeight:'bold' } }>Notes:</Text>
+                      <TextInput style={ { width: width - 220, fontSize: 12 } }
+                        placeholder='(optional)'
+                        onChange={ this.handleMarkerTitleInput } />
+                    </View>
+
+                    <View style={ { flex: 1, justifyContent: 'center', alignItems: 'center', paddingBottom: 15 } }>
+                      <Text style={ { fontSize: 14 , fontWeight: 'bold' } }>Which day will you be going?</Text>
+                      <Picker style={ {height: 100, width } }
+                        itemStyle={ { height: 100, fontSize: 14 } }
+                        selectedValue={ this.state.marker.day }
+                        onValueChange={ this.handleMarkerDayInput } >
+                        { pickerArray }
+                      </Picker>
+                    </View>
+
+                    <TouchableOpacity onPress={ this.handleModalSubmit }>
+                      <Text style={ { color: 'green' , paddingBottom: 20, fontWeight: 'bold' } }>Submit</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={ this.handleModalClose } >
+                      <Text style={ { fontWeight: 'bold', paddingBottom: 20 } }>Close</Text>
+                    </TouchableOpacity>
                   </View>
-
-                  <View style={ { flex: 1, justifyContent: 'center', alignItems: 'center', paddingBottom: 15 } }>
-                    <Text style={ { fontSize: 14 , fontWeight: 'bold' } }>Which day will you be going?</Text>
-                    <Picker style={ {height: 100, width } }
-                      itemStyle={ { height: 100, fontSize: 14 } }
-                      selectedValue={ this.state.marker.day }
-                      onValueChange={ this.handleMarkerDayInput } >
-                      { pickerArray }
-                    </Picker>
-                  </View>
-
-                  <TouchableOpacity onPress={ this.handleModalSubmit }>
-                    <Text style={ { color: 'green' , paddingBottom: 20, fontWeight: 'bold' } }>Submit</Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={ this.handleModalClose } >
-                    <Text style={ { fontWeight: 'bold', paddingBottom: 20 } }>Close</Text>
-                  </TouchableOpacity>
                 </View>
-              </View>
-            </Modal>
-
+              </KeyboardAvoidingView>
+            </TouchableWithoutFeedback>
+          </Modal>
         </View>
     );
   }
