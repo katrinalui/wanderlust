@@ -6,6 +6,8 @@ import { TextInput,
          FlatList,
          Share,
          Modal,
+         Keyboard,
+         TouchableWithoutFeedback,
          StyleSheet } from 'react-native';
 import { Toolbar } from 'react-native-material-ui';
 import FloatLabelTextField from '../form/float_label_text_field';
@@ -90,52 +92,54 @@ class NewTripForm extends React.Component {
     return (
       <View style={ styles.container }>
         <Toolbar
-          style={{ container: { paddingTop: 45, height: 70 } }}
+          style={{ container: { paddingTop: 45, height: 90 } }}
           leftElement="chevron-left"
           onLeftElementPress={() => this.props.navigation.navigate("Dashboard")}
         />
-      <View style={styles.formContainer}>
-        <Text style={styles.title}>Create a Trip</Text>
-        <FloatLabelTextField
-          placeholder="Title"
-          placeholderTextColor="#B1B1B1"
-          value={this.state.title}
-          maxLength={50}
-          onChangeTextValue={text => this.handleChange(text, 'title')}
-        />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.formContainer}>
+          <Text style={styles.title}>Create a Trip</Text>
+          <FloatLabelTextField
+            placeholder="Title"
+            placeholderTextColor="#B1B1B1"
+            value={this.state.title}
+            maxLength={50}
+            onChangeTextValue={text => this.handleChange(text, 'title')}
+          />
 
-        <View style={styles.dateContainer}>
-            <FloatLabelDatePicker
-              style={styles.datePicker}
-              customStyles={{dateText: styles.dateInput}}
-              date={ this.state.startDate }
-              placeholder="Start Date"
-              noBorder={true}
-              onChangeDateValue={ (date) => this.handleChange(date, 'startDate') }
-              minDate={ new Date }
-            />
+          <View style={styles.dateContainer}>
+              <FloatLabelDatePicker
+                style={styles.datePicker}
+                customStyles={{dateText: styles.dateInput}}
+                date={ this.state.startDate }
+                placeholder="Start Date"
+                noBorder={true}
+                onChangeDateValue={ (date) => this.handleChange(date, 'startDate') }
+                minDate={ new Date }
+              />
 
-            <FloatLabelDatePicker
-              style={styles.datePicker}
-              customStyles={{dateText: styles.dateInput}}
-              date={ this.state.endDate }
-              placeholder="End Date"
-              noBorder={true}
-              onChangeDateValue={ (date) => this.handleChange(date, 'endDate') }
-              minDate={ this.state.startDate || new Date }
-            />
+              <FloatLabelDatePicker
+                style={styles.datePicker}
+                customStyles={{dateText: styles.dateInput}}
+                date={ this.state.endDate }
+                placeholder="End Date"
+                noBorder={true}
+                onChangeDateValue={ (date) => this.handleChange(date, 'endDate') }
+                minDate={ this.state.startDate || new Date }
+              />
+            </View>
+
+
+          <Button title='Create'
+                  color='white'
+                  onPress={ this.handleSubmit } />
+
+          <FlatList data={ errors }
+                    keyExtractor={item => Object.keys(item)[0]}
+                    renderItem={ ({ item }) =>
+                    <Text style={styles.errors}>{ Object.values(item)[0] }</Text>} />
           </View>
-
-
-        <Button title='Create'
-                color='white'
-                onPress={ this.handleSubmit } />
-
-        <FlatList data={ errors }
-                  keyExtractor={item => Object.keys(item)[0]}
-                  renderItem={ ({ item }) =>
-                  <Text style={styles.errors}>{ Object.values(item)[0] }</Text>} />
-        </View>
+        </TouchableWithoutFeedback>
 
         <Modal
           animationType="slide"
@@ -157,6 +161,7 @@ class NewTripForm extends React.Component {
           </View>
         </Modal>
       </View>
+
     );
   }
 }

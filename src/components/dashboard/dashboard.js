@@ -9,6 +9,7 @@ import {
   StatusBar,
   Modal,
   Button,
+  Image,
   TextInput,
 } from 'react-native';
 import {
@@ -94,6 +95,10 @@ class Dashboard extends React.Component {
       <View style={ styles.content }>
         <Toolbar
           style={{ container: { paddingTop: 35, paddingBottom: 20, height: 65, borderBottomColor: 'grey', borderBottomWidth: 1 } }}
+          leftElement={<Image
+                        source={require('../../../assets/images/logo_white.png')}
+                        resizeMode="contain"
+                        style={{width: 36, height: 36}} />}
           centerElement={`My Trips`}
         />
         <View style={ styles.header }>
