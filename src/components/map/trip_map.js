@@ -49,6 +49,7 @@ class TripMap extends React.Component {
     this.handleMarkerTitleInput = this.handleMarkerTitleInput.bind(this);
     this.handleMarkerDayInput = this.handleMarkerDayInput.bind(this);
     this.handleModalClose = this.handleModalClose.bind(this);
+    this.handleModalOutsideClick = this.handleModalOutsideClick.bind(this);
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
     this.handleMarkerPress = this.handleMarkerPress.bind(this);
   }
@@ -197,14 +198,13 @@ class TripMap extends React.Component {
             ))}
           </MapView>
 
-
           <Modal
             animationType="slide"
             transparent={ true }
             visible={ this.state.modalVisible }
           >
-
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss} style={{ flex: 1 }}>
+            <TouchableWithoutFeedback onPress={ this.handleModalOutsideClick }
+                                      style={{ flex: 1 }}>
               <KeyboardAvoidingView
                 behavior="padding"
                 pointerEvents="box-none"
@@ -285,6 +285,11 @@ class TripMap extends React.Component {
         latitude: null
       }
     });
+  }
+
+  handleModalOutsideClick() {
+    Keyboard.dismiss();
+    if (!this.state.marker.title) this.handleModalClose();
   }
 
   handleRegionChange(coordinates) {
